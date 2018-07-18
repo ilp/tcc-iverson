@@ -1,0 +1,6 @@
+context-free syntax
+    
+    Start.Program = Sequence
+    
+    Sequence.Empty = []
+    Sequence.Sequence = [[Instr][Sequence]] 

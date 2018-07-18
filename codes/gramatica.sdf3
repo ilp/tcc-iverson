@@ -1,0 +1,14 @@
+context-free syntax
+    
+    Start.Program = <<Statement*>>
+	
+    Statement.Instr = <<Instr>>
+    Statement.Declaration = <<Declaration>>
+	
+    Declaration.Variable = <<Identifier> = <Expr>>
+    Declaration.Procedure = <procedure <Identifier> { 
+                                <Statement*> 
+                            }>
+    Declaration.ProcParam = <procedure <Identifier> <Params> { 
+                                <Statement*>
+                            }>

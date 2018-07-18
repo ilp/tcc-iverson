@@ -19,7 +19,8 @@
 
 \usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
 \usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
-\usepackage{color}				% Controle das cores
+\usepackage{listings}
+\usepackage{color}% Controle das cores
 \usepackage{graphicx}			% Inclusão de gráficos
 \usepackage{microtype} 			% para melhorias de justificação
 \usepackage{multicol}			% multiplas colunas no texto
@@ -31,10 +32,44 @@
 \usepackage{amsthm}
 \usepackage{lipsum}
 \usepackage{blindtext}
+\usepackage{varwidth}
+\usepackage{fancyvrb}
+\usepackage{tcolorbox}
 
+\definecolor{eclipseBlue}{RGB}{42,0.0,255}
+\definecolor{eclipseGreen}{RGB}{63,127,95}
+\definecolor{eclipsePurple}{RGB}{127,0,85}
+\lstdefinelanguage{Robo}
+{
+    keywords=[1]{
+        procedure, if, repeatWhile, else
+    },
+    keywordstyle=[1]\color{eclipsePurple},
+    keywords=[2]{right, rightIsObstacle, leftIsObstacle, forward, show},
+    keywordstyle=[2]\color{eclipseBlue},
+    sensitive=false,
+    morestring=[b]',
+    morecomment=[l]{--}
+}
+\lstset{
+  language={Robo},
+  basicstyle=\small\ttfamily, % Global Code Style
+  captionpos=b, % Position of the Caption (t for top, b for bottom)
+  extendedchars=true, % Allows 256 instead of 128 ASCII characters
+  tabsize=2, % number of spaces indented when discovering a tab 
+  columns=fixed, % make all characters equal width
+  keepspaces=true, % does not ignore spaces to fit width, convert tabs to spaces
+  showstringspaces=false, % lets spaces in strings appear as real spaces
+  breaklines=true, % wrap lines if they don't fit
+  frame=trbl, % draw a frame at the top, right, left and bottom of the listing
+  frameround=tttt, % make the frame round at all four corners
+  framesep=4pt, % quarter circle size of the round corners
+  numbers=left, % show line numbers at the left
+}
 
 % ---
 % ---
+
 % Pacotes de citações
 % ---
 \usepackage[brazilian]{backref}	 % Paginas com as citações na bibl
@@ -232,7 +267,9 @@
 % ----------------------------------------------------------
 \include{secoes/capitulo01}
 \include{secoes/capitulo02}
-%\include{secoes/capitulo03}
+\include{secoes/capitulo03}
+\include{secoes/capitulo04}
+\include{secoes/capitulo05}
 
 
 % ----------------------------------------------------------
