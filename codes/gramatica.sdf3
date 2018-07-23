@@ -1,3 +1,15 @@
+module Robo2CSP
+
+imports
+	
+    Common
+    ExpressionsBoolean
+    ExpressionsMath
+
+context-free start-symbols
+  
+    Start
+
 context-free syntax
     
     Start.Program = <<Statement*>>
@@ -12,3 +24,12 @@ context-free syntax
     Declaration.ProcParam = <procedure <Identifier> <Params> { 
                                 <Statement*>
                             }>
+    
+    Params.Params = <(<{ Identifier ", "}*>)>
+    Identifier.ID = <<ID>>
+    
+    Expr.ExpBool = <<ExprBoolean>>
+    Expr.ExpMath = <<ExprMath>>
+
+    Instr.ProcCall = <<Identifier> <TypeParams>>
+    TypeParams.ExprParams = <(<{ Expr ", "}*>)>

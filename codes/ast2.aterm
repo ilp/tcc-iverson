@@ -1,0 +1,21 @@
+Program(
+  [ Declaration(Variable(ID("countBoxes"), ExpMath(Num("0"))))
+  , Declaration(Variable(ID("lookLine"), ExpMath(Num("0"))))
+  , Declaration(ProcParam(...))
+  , Instr(RIGHT())
+  , Instr(
+      RPTWLE(
+        FROISCLR()
+      , [ Instr(
+            ProcCall(ID("countLine"), ExprParams([ExpMath(Var("lookLine"))]))
+          )
+        , Instr(FORWARD(Num("1")))
+        ]
+      )
+    )
+  , Instr(
+      ProcCall(ID("countLine"), ExprParams([ExpMath(Var("lookLine"))]))
+    )
+  , Instr(SHOW(ExpMath(Var("countBoxes"))))
+  ]
+)
