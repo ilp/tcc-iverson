@@ -2,43 +2,6 @@ Declaration(
   ProcParam(
     ID("countLine")
   , Params([ID("side")])
-  , [ Instr(
-        IF(
-          EqMath(Var("side"), Num("1"))
-        , [ Instr(
-              IF(
-                LEFISOBS()
-              , [ Declaration(
-                    Variable(
-                      ID("countBoxes")
-                    , ExpMath(Add(Var("countBoxes"), Num("1")))
-                    )
-                  )
-                ]
-              , None()
-              )
-            )
-          ]
-        , Some(
-            ELSE(
-              [ Instr(
-                  IF(
-                    RIGISOBS()
-                  , [ Declaration(
-                        Variable(
-                          ID("countBoxes")
-                        , ExpMath(Add(Var("countBoxes"), Num("1")))
-                        )
-                      )
-                    ]
-                  , None()
-                  )
-                )
-              ]
-            )
-          )
-        )
-      )
-    ]
+  , [ ... ]
   )
 )

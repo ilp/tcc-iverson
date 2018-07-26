@@ -1,0 +1,16 @@
+rules
+
+var-analyze-const: [] -> []
+var-analyze-const: [Declaration(var) | es] -> [<write-variable-const> var, "\n" | <var-analyze-const> es ] 
+
+write-variable-const: Variable(ID(name), ExpMath(s)) -> $[]
+
+write-variable-const: 
+	Variable(ID(name), ExpMath(Num(v))) -> 
+		$[[name]Const = [v]]
+		
+write-variable-const: 
+	Variable(ID(name), ExpBool(exp)) -> 
+		$[[name]Const = [exp']]
+		with
+			exp' := <to-csp-e> exp

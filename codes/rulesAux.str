@@ -1,10 +1,5 @@
 rules
 
-statement-definition: [] -> [$[SKIP]]
-statement-definition: [s | ps] -> [<to-csp> s  | <statement-definition> ps]
-statement-definition-decl: [] -> []
-statement-definition-decl: [Declaration(s) | ps] -> [<to-csp> s  | <statement-definition-decl> ps]
-
 get-procs-param = filter(?Declaration(ProcedureParam(_,_,_)))
 get-procs = filter(?Declaration(Procedure(_,_)))
 get-commands = filter(?Instr(_))

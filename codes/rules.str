@@ -8,15 +8,16 @@ to-csp:
 	INIT = { [paramsInit'][varsInit'] (X, startX), (Y, startY), (ORIENTATION, NORTH_), (BX, startBX), (BY, startBY) }
 	
 	[proc']
+	
 	COMMANDS = 
 		[p']
 	]
 	with
+	  vars'       := <var-analyze-const> <get-vars> T1;
 		paramsType' := <param-analyze-type> <get-ids> <get-params> T1;
+		varsType'   := <var-analyze-type> <get-vars> T1;
 		paramsInit' := <param-analyze-init> <get-ids> <get-params> T1;
-		vars'     := <var-analyze-global> <get-vars> T1;
-		varsType' := <var-analyze-type> <get-vars> T1;	
-		varsInit' := <var-analyze-init> <get-vars> T1;		
-		proc'     := <statement-definition-decl> <union>(<get-procs> T1, <get-procs-param> T1);	
-		p'	      := <statement-definition> <get-commands> T1
+		varsInit'   := <var-analyze-init> <get-vars> T1;		
+		proc'       := <statement-definition-decl> union>(<get-procs> T1, <get-procs-param> T1);	
+		p'	        := <statement-definition> <get-commands> T1
 	

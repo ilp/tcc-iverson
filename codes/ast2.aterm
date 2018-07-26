@@ -1,6 +1,6 @@
 Program(
   [ Declaration(Variable(ID("countBoxes"), ExpMath(Num("0"))))
-  , Declaration(Variable(ID("lookLine"), ExpMath(Num("0"))))
+  , Declaration(Variable(ID("lookLine"), ExpMath(Num("1"))))
   , Declaration(ProcParam(...))
   , Instr(RIGHT())
   , Instr(
