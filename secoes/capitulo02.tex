@@ -3,7 +3,7 @@
 O presente capítulo apresenta os conceitos relacionados à área de Verificação Automática de Software e os principais métodos utilizados. Apresentando os conceitos e fundamentos utilizados pelas ferramentas para a criação de um compilador. Além de contextualizar o modelo formal equivalente ao ambiente RoboMind.
 
 \section{Simulação de Robôs}
-
+%Adicionar uns dois paragrafos sobre a simulação de robos
 
 \subsection{Ambiente RoboMind}
 O RoboMind\footnote[2]{http://robomind.net/}, mostrado na Figura \ref{fig:robomind}, é um ambiente de programação de robôs virtuais para o ensino e aprendizagem de robótica; possui uma interface com um espaço para a escrita dos programas e um outro espaço onde o aluno pode acompanhar a execução do robô em um mapa. Nesse ambiente, os programas são escritos na linguagem ROBO, uma linguagem educacional desenvolvida para a programação de robôs que oferece os principais comandos de programação: estruturas condicionais, estruturas de repetição, procedimentos e declaração de variáveis. O programa ROBO, ilustrado no lado esquerdo da Figura \ref{fig:robomind}, movimenta o robô enquanto o objeto (\textit{beacon}) não é detectado à sua frente: se não há nenhum obstáculo à sua frente, o robô avança uma célula (\textit{forward}), caso contrário o robô recua uma célula (\textit{backward}) e muda sua orientação para a direita (\textit{right}).
@@ -50,11 +50,13 @@ A técnica Verificação Dedutiva, diferentemente da anterior, é manual e reque
 
 Foi em CSP que as funções do ambiente RoboMind foram modeladas por \cite{nogueira}, ou seja, se um programa ROBO e o mapa forem reescritos em CSP e executados em conjunto com esse modelo é possível executar os mesmos passos da simulação no ambiente RoboMind na especificação formal.
 
+%colocar um exemplo aqui de código robo em csp, talvez usar o artigo do professor
+
 Existem várias ferramentas que podem ser utilizadas para a verificação de especificações escritas em CSP, as mais conhecidas são FDR\footnote[3]{https://www.cs.ox.ac.uk/projects/fdr/}, ProB\footnote[4]{https://www3.hhu.de/stups/prob} e PAT\footnote[5]{http://pat.comp.nus.edu.sg/}. Destas, a ferramenta FDR (\textit{Failures Divergence Refinement}) é a mais madura e utilizada; sua versão atual é FDR4 \cite{Gibson}. Por este motivo, este trabalho adota FDR4 como verificador de modelos.
 
 \subsection{Verificador de Modelos FDR}
 
-O verificador de modelos FDR, como citado, é o verificador de refinamento mais difundido para a álgebra de processo CSP. Este verificador utiliza a lista de processos CSP da especificação, e é capaz de verificar se os processos refinam uns aos outros de acordo com os modelos disponíveis na ferramenta: contraexemplo \textit{traces}; falhas (\textit{failures}); e falhas modelos de divergências (\textit{failures-divergences-models}). Além disso, é capaz de verificar outras propriedades: se o modelo está livre de \textit{deadlock} (\textit{deadlock-free}); se está livre de \textit{livelock} (\textit{livelock-free}) e verificação de determinismo \cite{Gibson}.
+O verificador de modelos FDR, como citado, é o verificador de refinamento mais difundido para a álgebra de processo CSP. Este verificador utiliza a lista de processos CSP da especificação, e é capaz de verificar se os processos refinam uns aos outros de acordo com os modelos disponíveis na ferramenta: \textit{traces} (menor caminho); falhas (\textit{failures}); e falhas modelos de divergências (\textit{failures-divergences-models}). Além disso, é capaz de verificar outras propriedades: se o modelo está livre de \textit{deadlock} (\textit{deadlock-free}); se está livre de \textit{livelock} (\textit{livelock-free}) e verificação de determinismo \cite{Gibson}.
 
 Na Figura \ref{fig:assertion} tem um exemplo de verificação de uma propriedade em FDR. As propriedades são chamadas de \textit{Assertions}, onde logo abaixo tem a lista de propriedades definidas em uma especificação CSP. Nesse caso, a propriedade analisada é se \texttt{PROGRAM} possui \textit{deadlock}, dada por \texttt{:[deadlock free [F]]}. Como o resultado falhou (\textit{Failed}), então o \texttt{PROGRAM} termina sua execução.
 
@@ -122,4 +124,16 @@ Todas essas seções da figura citada anteriormente são importantes para a defi
 
 A definição sintática com \textit{Spoofax}, mais especificamente usando a metalinguagem SDF3, como visto, ocorre de modo alto nível, facilitando todo esse processo. Como produto disso, temos uma árvore sintática não ambígua que é essencial para a etapa seguinte do processo de compilação, a geração de código. A transformação ocorre através da metalinguagem \textit{Stratego} que será explicada a seguir.
 
-\subsection{Transformação}
+\subsection{Transformação com Stratego}
+
+A transformação de programas nada mais é do que manipulação mecânica de um programa com a finalidade de melhorar seu custo computacional. Exemplo, seja $C(P)$ uma função, então aplicamos uma transformação em $P$, logo temos $C(P) > C(tr(P))$, ou seja o custo computacional da função transformada é inferior à função original \cite{metaborg}. Sabendo disso, temos a consciência da importância das tranformações em um processo de compilação. No entanto, no caso desse projeto, a finalidade não é a otimização, mas traduzir automaticamente o código ROBO em CSP em prol da análise automática da corretude dos programas escritos no ambiente RoboMind.
+
+\textit{Stratego} é uma linguagem para a definição de transformações aplicadas à uma AST. Essa metalinguagem tem uma notação capaz de construir e descontruir a árvore e usar reescrita de termos (\textit{term rewriting}), que basicamente reestrutura a árvore ou utiliza termos de interesse em uma determinada transformação. Essas transformações ocorrem em decorrência da definição de regras e estratégias. Os elementos da AST são representados por termos, como mostrado no arquivo \textit{Example.aterm} da Figura \ref{fig:sdf}. Esses termos estão na notação chamada de Formato de Termo Anotado (\textit{Annotated Term Format} - ATerm), uma notação que facilita a manipulação da árvore pelo \textit{Stratego}  \cite{metaborg}. Por exemplo, em ROBO o comando \texttt{forward(n)} é denotado em \textit{ATerm} por \texttt{Instr(FORWARD(Var("n")))}.
+
+Uma regra em \textit{Stratego} é definida como uma tranformação aplicada em um ou mais termos. Uma regra é dada por \texttt{L : p1 -> p2}, onde \texttt{L} é o nome da regra, \texttt{p1} é o termo que deve casar com a regra e \texttt{p2} o termo reescrito. Também pode ser definida através de uma abordagem utilizando interpolação de \textit{string} \cite{KatsSpoofax}. Uma regra desse tipo é dada por \texttt{L : T(p) -> \$[[p]]}, no qual \texttt{L} é o nome da regra, \texttt{T(p)} o termo que deve casar com a regra, e o texto na linguagem destino é gerado com o conteúdo entre \texttt{\$[} e \texttt{]} utilizando o valor de \texttt{p}. Além disso, é possível aplicar outras regras em cima de \texttt{p} utilizando a palavra reservada \texttt{with} no fim da regra. Isso é demonstrado na prática na Seção \ref{chap:cap3}.
+
+É importante saber que as estratégias são combinações de uma ou mais transformações dentro de uma nova transformação, elas são mais utilizadas para a remoção de tautologias e preposições falsas nos termos \cite{KatsSpoofax}. Para esta pesquisa, as estratégias não são muito relevantes, uma vez que o foco estão na definição de regras e eventualmente são utilizadas.
+
+O \textit{Stratego} possui algumas funções que podem ser utilizadas durante uma transformação. Por exemplo, há algumas funções que são usadas para filtrar termos em umas AST, ou seja, apenas termos de interesse são aplicados em uma transformação. É o caso da função \texttt{filter} que retorna uma lista com o conjunto de termos filtrados, esse filtro é aplicado apenas aos termos que estão no primeiro nível da árvore. Outra função importante é \texttt{collect-all}, que é responsável por recolher todos os termos em uma AST que casem com o termo analisado, essa busca ocorre em todos os níveis da árvore.
+
+Esses conceitos são extremamente importantes para acompanhar o raciocínio desenvolvido na próxima seção, em virtude de que é apresentado na prática diferentes definições de regras, com intuito de gerar código CSP para variáveis e procedimentos na linguagem ROBO.
