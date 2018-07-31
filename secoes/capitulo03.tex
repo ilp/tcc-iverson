@@ -1,26 +1,15 @@
 \chapter{Tradução de ROBO para CSP}
+\label{chap:cap3}
 A Seção 3.1 descreve como foi realizado o processo de tradução automático de ROBO para CSP através do framework Spoofax. Desde a fase inicial da definição da gramática até a geração de código.
 
-\section{Processo de Tradução Automática}
+\section{Definição da Linguagem ROBO com Spoofax}
+Nesta Seção veremos como ocorrreu todo o processo de definição da linguagem ROBO usando o framework Spoofax, o que inclui a definição da sintaxe e transformação da linguagem com o intuito de gerar código CSP semanticamente equivalente à ROBO. Todo o processo ocorreu de modo prático levando em consideração um exemplo real.
 
 \subsection{Ferramentas e Ambiente de Programação}
 O desenvolvimento de um compilador exige uma preparação bem elaborada de todo um ambiente de programação. No caso deste trabalho, foi necessário o uso do ambiente de programação Eclipse juntamente com um plugin do Spoofax. O qual foi essencial para o desenvolvimento da abordagem de tradução automática. O plugin tem todas as depedências para a geração de Árvore de Análise Sintática e transformação de código.
 
-\section{Definição da Linguagem ROBO com Spoofax}
-Nesta Seção veremos como ocorrreu todo o processo de definição da linguagem ROBO usando o framework Spoofax, o que inclui a definição da sintaxe e transformação da linguagem, resultando em código CSP.
 \subsection{Definição da Sintaxe}
 Essa é a etapa inicial para a construção do compilador, na qual devemos primeiro definir todos os aspectos sintáticos da linguagem de programação utilizada no ambiente RoboMind. Ou seja, essa etapa deverá ser capaz de considerar os programas escritos na linguagem ROBO e assegurá-los que estão sintaticamente corretos. Para a definição da gramática livre de contexto de ROBO foi utilizado o formalismo SDF3, como já explicado no Capítulo \ref{chap:cap2}. Além de definir a gramática, SDF3 também foi utilizado para definir a sintaxe lexical, como por exemplo, palavras reservadas de ROBO. O principal objetivo dessa etapa a geração de uma Árvore Sintática Abstrata (\textit{Abstract Syntax Tree - AST}, em inglês) dos programas ROBO. Esse produto resultante é de extrema importância para a geração de código CSP através do Stratego.
-
-É importante saber que a linguagem ROBO possui algumas características que a difere das linguagens de programação comuns, uma vez que se trata de uma DSL, com um objetivo bem definido. Abaixo estão listadas algumas das principais características de ROBO:
-
-\begin{itemize}
-    \item Funções booleanas predefinidas para detecção de obstáculos ou objetos ao redor do robô, por exemplo \textit{frontIsObstacle}, para verificar se há obstáculo na frente do robô ou \textit{frontIsClear}, para verificar se a frente do robô está livre de quaisquer objetos.
-    \item Funções predefinidas para a movimentação do robô, como por exemplo \textit{forward(n)}, para movimentar para frente ou \textit{backward(n)}, para movimentar para trás.
-    \item Variáveis globais.
-    \item Procedimentos parametrizados e não parametrizados.
-    \item Estruturas condicionais e de repetição, assim como na maioria das linguagens de programação.
-    \item Expressões aritméticas com valores inteiros.
-\end{itemize}
 
 Para exemplificar todo o processo de compilação, definimos um exemplo de programa em ROBO que resolve um problema específico. O problema definido foi o ``Contando Caixas'', proposto por RoboLab-FURB\ref{add-ref} e adaptamos para esta pesquisa. O objetivo desse problema é propor uma solução para a simulação de um robô capaz de contar caixas espalhadas por diferentes cenários. O problema foi alterado para que exista um parâmetro que determina o lado no qual o robô deverá contar, sendo lado esquerdo ou direito. Na Figura \ref{fig:map} é mostrado um mapa utilizado para a simulação do problema em questão. Nele é possível ver um robô e algumas caixas, duas na linha superior e três na linha inferior. Na figura foi adicionado um ``X'' para indicar a posição final que o robô deverá parar após a execução do programa. Para exemplificar uma simulação, considere que o lado direito foi escolhido como parâmetro, desse modo, o robô deverá percorrer em linha reta contando as caixas à sua direita e ao chegar na posição final mostrará o resultado 3, caso o parâmetro fosse o lado esquerdo, a quantidade de caixas contadas pelo robô seria 2.
 
@@ -95,7 +84,7 @@ A geração da AST é essencial para a etapa de geração de código através do
 
 Essa etapa é a mais importante, em razão de que o resultado deste processo é o código CSP, produto essencial para a verificação dos programas ROBO semanticamente equivalentes à ROBO no verificador de modelos FDR.
 
-O primeiro passo foi definir uma regra em Stratego para manipular os principais termos de um AST. No qual, para cada termo, outras regras são aplicadas, isto é, o conjunto resultante de termos aplicados à uma regra é utilizado pela regra consecutiva. Isto é melhor exemplificado na regra definida na Figura \ref{fig:rules}. A regra \texttt{to-csp} é reponsável por aplicar um cabeçalho para os programas em CSP e desencadear outras regras para os demais termos da árvore. Como a AST de ROBO sempre inicia com \texttt{Program}, isso siginifica que toda geração de código é iniciada por essa regra, no caso ocorre o casamento com o termo \texttt{Program(T1)}, indicado na linha 4, onde \texttt{T1} é todo o restante da árvore sintática. Diante disso, todas as demais regras são aplicadas aos termos derivados de \texttt{T1}.
+O primeiro passo foi definir uma regra em Stratego para manipular os principais termos de um AST. No qual, para cada termo, outras regras são aplicadas, isto é, o conjunto resultante de termos aplicados à uma regra é utilizado pela regra consecutiva. Isto é melhor exemplificado na regra definida na Figura \ref{fig:rules}. A regra \texttt{main-to-csp} é reponsável por aplicar um cabeçalho para os programas em CSP e desencadear outras regras para os demais termos da árvore. Como a AST de ROBO sempre inicia com \texttt{Program}, isso siginifica que toda geração de código é iniciada por essa regra, no caso ocorre o casamento com o termo \texttt{Program(T1)}, indicado na linha 4, onde \texttt{T1} é todo o restante da árvore sintática. Diante disso, todas as demais regras são aplicadas aos termos derivados de \texttt{T1}.
 
 \begin{figure}[h]
 \centering
@@ -107,7 +96,7 @@ O primeiro passo foi definir uma regra em Stratego para manipular os principais 
 
 Antes de arbordar sobre as demais partes da regra, vale salientar que o modelo formal de ROBO, especificados em CSP, proposto por \cite{nogueira} possui um processo que simula uma memória devido à impossibilidade de utilizar variáveis em CSP. Por isso, esse processo é utilizado para armazenar apenas os valores da posição (x,y) do robô, sua orientação e a posição (x,y) de um determinado objeto no mapa que são consultados e atualizados em tempo de execução. Diante disso, este trabalho vai reutilizar esta mesma memória para armazenar os valores das variáveis encontradas em programas ROBO, bem como os valores dos parâmetros dos procedimentos. No entanto, na espeficicação formal do trabalho citado anteriormente, os valores dos atributos do robô, citados neste parágrafo, são representados por um conjunto de dados, no formato de chave e valor, para inicialização da memória: \texttt{INIT = \{ (X, startX), (Y, startY), (ORIENTATION, NORTH\_), (BX, startBX), (BY, startBY) \}}. Assim, propomos neste trabalho uma abordagem para que todas as variáveis presentes em programas ROBO sejam adicionadas à esse conjunto \texttt{INIT}. Por exemplo, as variáveis \texttt{countBoxes} e \texttt{lookLine} do programa ilustrado na Figura \ref{fig:roboprogram} seriam adicionadas ao conjunto da seguinte forma: \texttt{INIT = \{ (countBoxes, 0), (lookLine, 1), (X, startX), (Y, startY), (ORIENTATION, NORTH\_), (BX, startBX), (BY, startBY) \}}. 
 
-Sabendo disso, como visto na Figura \ref{fig:rules}, está definida a regra \texttt{to-csp} na qual o conteúdo que está entre as linhas 5 e 13 será transformado em código CSP. A linha 5 contém o elemento \texttt{vars'} que é utilizado para transformar todas as variáveis de ROBO em constantes no código CSP. Esse elemento é transformado após a palavra \texttt{with}, no qual outras duas regras são aplicadas em \texttt{T1} e o valor resultante é aplicado a \texttt{vars'}. Inicialmente é aplicado a regra \texttt{<get-vars>} em \texttt{T1}, essa regra tem como objetivo filtrar o conjunto de \textit{ATerms} que casam com o termo \texttt{Declaration(Variable(\_,\_))}, olhar linha 6 da Figura \ref{fig:rules2}. Após isso, uma lista com todos os termos desejados são aplicados na regra mais a esquerda, \texttt{<var-analyze-global>}, que é encarregada de escrever as variáveis declaradas no programa ROBO em forma de constantes na especificação formal CSP. A Figura \ref{fig:rules_constants} mostra a definição das regras responsáveis pela geração das constantes. A regra \texttt{<var-analyze-const>} é aplicada de modo recursivo, muito similar às funções de linguagens funcionais, no qual uma função é aplicada na cabeça (\textit{head}) enquanto a mesma função é aplicada na calda (\textit{tail}) até chegar no caso base, que neste é caso é uma lista vazia, como está indicado na linha 3. A análise ocorre em cima do termo \textit{Declaration(var)}, onde a regra \texttt{<write-variable-const>} é aplicada em \texttt{var} para escrever o CSP correspondente ao tipo de dado da variável. Por isso, há três declarações dessa regra, a primeira para escrever um texto vazio em casos de expressões matemáticas, já que as constantes não recebem expressões (exemplo, a + b); a segunda para escrever o texto \texttt{[name]Const = [v]}, ou seja, o nome da variável (\texttt{name}) e seu respectivo valor inteiro (\texttt{v}); por último, para expressões booleanas, onde uma outra regra, \texttt{<to-csp-e>}, é aplicada para escrever o valor booleano (\textit{true} ou \textit{false}), dependendo do valor do termo em \texttt{exp'}.
+Sabendo disso, como visto na Figura \ref{fig:rules}, está definida a regra \texttt{main-to-csp} na qual o conteúdo que está entre as linhas 5 e 13 será transformado em código CSP. A linha 5 contém o elemento \texttt{vars'} que é utilizado para transformar todas as variáveis de ROBO em constantes no código CSP. Esse elemento é transformado após a palavra \texttt{with}, no qual outras duas regras são aplicadas em \texttt{T1} e o valor resultante é aplicado a \texttt{vars'}. Inicialmente é aplicado a regra \texttt{<get-vars>} em \texttt{T1}, essa regra tem como objetivo filtrar o conjunto de \textit{ATerms} que casam com o termo \texttt{Declaration(Variable(\_,\_))}, olhar linha 6 da Figura \ref{fig:rules2}. Após isso, uma lista com todos os termos desejados são aplicados na regra mais a esquerda, \texttt{<var-analyze-global>}, que é encarregada de escrever as variáveis declaradas no programa ROBO em forma de constantes na especificação formal CSP. A Figura \ref{fig:rules_constants} mostra a definição das regras responsáveis pela geração das constantes. A regra \texttt{<var-analyze-const>} é aplicada de modo recursivo, muito similar às funções de linguagens funcionais, no qual uma função é aplicada na cabeça (\textit{head}) enquanto a mesma função é aplicada na calda (\textit{tail}) até chegar no caso base, que neste é caso é uma lista vazia, como está indicado na linha 3. A análise ocorre em cima do termo \textit{Declaration(var)}, onde a regra \texttt{<write-variable-const>} é aplicada em \texttt{var} para escrever o CSP correspondente ao tipo de dado da variável. Por isso, há três declarações dessa regra, a primeira para escrever um texto vazio em casos de expressões matemáticas, já que as constantes não recebem expressões (exemplo, a + b); a segunda para escrever o texto \texttt{[name]Const = [v]}, ou seja, o nome da variável (\texttt{name}) e seu respectivo valor inteiro (\texttt{v}); por último, para expressões booleanas, onde uma outra regra, \texttt{<to-csp-e>}, é aplicada para escrever o valor booleano (\textit{true} ou \textit{false}), dependendo do valor do termo em \texttt{exp'}.
 
 \begin{figure}[h]
 \centering
@@ -149,10 +138,67 @@ De modo semelhante ao que é feito em \texttt{paramsType'}, também ocorre em \t
 \label{fig:rules_var_type}
 \end{figure}
 
-Foi explicado alguns paráfragos antes, que em CSP é necessário um processo para simular uma mémória que armazena os valores das variáveis e demais dados do robô. Assim, a escrita do CSP de parâmetros e variáveis em \texttt{INIT}, através dos elementos \texttt{paramsInit'} e \texttt{varsInit'}, ocorre de modo análago às explicações dadas para os tipos de dados de parâmetros e variáveis.
+Foi explicado alguns paráfragos antes, que em CSP é necessário um processo para simular uma mémória que armazena os valores das variáveis e demais dados do robô. Assim, a escrita do CSP de parâmetros e variáveis em \texttt{INIT}, através dos elementos \texttt{paramsInit'} e \texttt{varsInit'}, ocorre de modo análago as explicações dadas para os tipos de dados de parâmetros e variáveis.
 
+Voltando para a regra principal, \texttt{<main-to-csp>}, na Figura \ref{fig:rules} está definido o elemento \texttt{proc'} na linha 10, ele é responsável expressar todos os procedimentos dos programas ROBO em um formato compatível com os processos em código CSP, mas que sejam semanticamente iguais ao procedimento escrito na liguagem ROBO. Na linha 21 dessa imagem é possível ver que há a regra \texttt{<union>}, ela é uma regra nativa do framework, cujo objetivo é aplicar o conceito matemático de união de conjuntos em duas listas. Como existem dois tipos de procedimentos na linguagem ROBO, os parametrizados e não parametrizados, é necessário aplicar individualmente duas regras em \textit{T1} para recolher todos os termos relacionados aos procedimentos (olhar linhas 3 e 4 da Figura \ref{fig:rules2}) e depois combiná-las em uma única lista. Essa lista resultante é aplicada na regra \texttt{<statement-definition-decl>}, exposta na Figura \ref{fig:rules_proc}.
 
+\begin{figure}[h]
+\centering
+\caption{Regras para a geração de código CSP dos procedimentos}
+\lstinputlisting[language=Java]{codes/rules_proc.str}
+\fonte{O autor}
+\label{fig:rules_proc}
+\end{figure}
 
-....
+Para essa regra também é preciso de recursividade, uma vez que devemos aplicar algumas regras para cada procedimento na lista. A escrita de código CSP ocorre na regra \texttt{<to-csp>} que é aplicada ao conteúdo de \texttt{s} no termo \texttt{Declaration(s)}. Se \texttt{s} casar com a estrutura \texttt{ProcParam(ID(name), Params(params), procedureBody}, então a geração do código deve ocorrer. Sendo \texttt{name} o nome do procedimento; \texttt{params} a lista de parâmetros; e \texttt{procedureBody} as instruções dentro do corpo do procedimento. Em CSP um processo foi definido como o nome do procedimento em ROBO com a junção do sufixo \texttt{Proc} seguido dos parâmetros (\texttt{params'}) e o símbolo de igual, logo em seguida tem o elemento \texttt{paramVar'} seguido de \texttt{procedureBody'}. Para o elemento paramVar' é aplicada a regra <put-param-mem>, implementada com o objetivo de resolver o problema de atualização de valor dos parâmetros, pois em ROBO é possível atualizar o valor do parâmetro a qualquer momento dentro um procedimento. Em tal caso, foi proposta uma abordagem onde cada parâmetro de um procedimento é adicionado à memória antes das instruções de um mesmo procedimento. A Figura \ref{fig:put_proc} destaca as regras responsáveis por isso, o código CSP é gerado na linha 4. Por exemplo, na Figura \ref{fig:roboprogram} tem o parâmetro \texttt{side} no procedimento \texttt{countLine}, então quando o CSP é gerado esse parâmetro é chamado de \texttt{sideParam} e o seu valor é adicionado na memória da seguinte maneira: \texttt{set.side!(sideParam)}.
 
+\begin{figure}[h]
+\centering
+\caption{Regras que adicionam os valores dos parâmetros na memória em uma chamada de procedimento}
+\lstinputlisting[language=Java]{codes/put-var-proc.str}
+\fonte{O autor}
+\label{fig:put_proc}
+\end{figure}
+
+Como passo seguinte, ocorre a geração de código para o corpo do procedimento, onde um procedimento poder conter diferentes instruções, seja para movimentar robô ou chamar inclusive outro procedimento, além de todas as estruturas condicionais e de repetição. Ainda na Figura \ref{fig:rules_proc}, o elemento \texttt{procedureBody'} é aplicado na regra \texttt{<statement-definition>}, explicitado na Figura \ref{fig:statement}. Essa regra aplica recursivamente a regra \texttt{<to-csp>} para todos os termos da lista, quando chegar ao caso base, ou seja, chegou no fim de um procedimento, é escrito a palavra \texttt{SKIP}, um evento necessário em CSP para indicar que algum outro evento terminou.
+
+\begin{figure}[h]
+\centering
+\caption{Regras que aplica \texttt{to-csp} para cada instrução}
+\lstinputlisting[language=Java]{codes/rules_statement.str}
+\fonte{O autor}
+\label{fig:statement}
+\end{figure}
+
+A regra \texttt{<to-csp>} possui múltiplas definições, pois a maioria das outras regras aplicam \texttt{<to-csp>} nos seus termos. Isso ocorre porque existem diferentes tipos de instruções, algumas delas estão representadas na árvore mostrada na Figura \ref{fig:ast1}, como por exemplo, \texttt{ProcCall} e \texttt{SHOW}. Na Figura \ref{fig:to_csp} está destacada essas duas regras, a primeira, representada da linha 3, gera o código CSP para ocorrência de chamada de procedimento, enquanto a segunda regra, linha 13, expressa a geração de código CSP do comando que exibe valores no \textit{console}, que neste caso gera código CSP para exibir valores inteiros, mas existe uma outra regra \texttt{<to-csp>} para gerar código que exibe valores booleanos.
+
+\begin{figure}[h]
+\centering
+\caption{Exemplos da regra \texttt{to-csp}}
+\lstinputlisting[language=Java]{codes/to-csp.str}
+\fonte{O autor}
+\label{fig:to_csp}
+\end{figure}
+
+Todas as instruções de um programa ROBO são adicionadas dentro do processo chamado de \texttt{COMMANDS} em CSP onde todas instruções são representadas pelo elemento \texttt{instr'} indicado na linha 22 da Figura \ref{fig:rules}. Como o foco deste trabalho são as regras para procedimentos e variáveis, serão explicadas apenas as definições de \texttt{<to-csp>} que representam instruções dessa natureza. A primeira deverição de \texttt{<to-csp>} é para chamada de procedimentos que está definida na Figura \ref{fig:to_csp}. Nela foi proposto uma abordagem para antes de uma chamada de procedimento, em CSP, deve-se obter os valores das variáveis atualizados, mostrado na linha 5, que é representado pelo elemento \texttt{vars'}. Para esse elemente é aplicada a regra \texttt{<get-vars-exp>} com o objetivo de recolher todas as variáveis presentes na expressão (\texttt{ExprParams()}). Depois é aplicada a regra \texttt{<put-get-var-exp-analyze>}, cujo objetivo é colocar todas as variáveis no formato reconhecido CSP, como mostra na Figura \ref{fig:rules_var}. Na linha 6 ocorre a escrita do texto CSP pela regra \texttt{<put-get-var-exp>}, por exemplo, em um caso prático, a variável \texttt{countBoxes} em ROBO seria escrita como \texttt{get.countBoxes?countBoxesVar} no modelo formal. Já para escrever os parâmetros é aplicada a regra  \texttt{<get-param-names-call>} nos termos de \texttt{params}, lembrando que quando ocorre uma chamada de procedimento é possível passar variáveis, valores e expressões como parâmetro. Na Figura \ref{fig:rules_param} mostra várias definições dessa regra, uma vez que há expressões matemáticas e booleanas, além do mais a aplicação dela ocorre de modo recursivo. Por exemplo, na linha 7, mostra o momento em que é empregada a regra \texttt{<to-csp-e>} para o elemento \texttt{exp'} que tem o propósito de gerar código CSP das expressões. O mesmo argumento é aplicável para as demais derivações dessa regra.
+
+\begin{figure}[h]
+\centering
+\caption{Regras para gerar paramâteros em uma chamada de procedimento}
+\lstinputlisting[language=Java]{codes/rules_proc_call.str}
+\fonte{O autor}
+\label{fig:rules_param}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\caption{Regras para buscar e atualizar valores das variáveis}
+\lstinputlisting[language=Java]{codes/rules_var.str}
+\fonte{O autor}
+\label{fig:rules_var}
+\end{figure}
+
+Outra versão de \texttt{<to-csp>} foi definida para atualização de variáveis, indicada pela linha 10 na Figura \ref{fig:rules_var}. Na linha 12 é possível notar quando o código CSP é gerado com intuito de escrever uma consulta do valor da própria variável, enquanto as demais variáveis são representadas pelo elemento \texttt{var'}, na linha 13. Essa abordagem é necessária porque uma variável pode ser atualizada pelo usando ela mesma, além de uma combinação de expressões com diferentes variáveis e valores. O código CSP da atualização do valor dela na memória ocorre na linha 14. Para fins práticos, considerando a expressão \texttt{countBoxes = countBoxes + 1}, ela seria escrita em CSP como \texttt{member((countLineVar + 1), MAXVAR) \& set.countLine!((countLineVar + 1))}. Isso quer dizer que primeiro é verificado se o novo valor da variável está dentro do limite inferior e superior para que de fato seja atualizada pelo comando \texttt{set}.
+
+Em vista das explicações mencionadas à respeito das regras de tradução implementadas para procedimentos e variáveis, entende-se que de agora em diante é possível gerar código CSP automaticamente para programas ROBO. A tradução é contemplada com as regras de compilação iniciais apresentadas em \cite{nogueira} para as instruções básicas do robô, agora também incluem regras para programas que possuem declarações de procedimentos e variáveis e chamadas de procedimentos e atualizações de variáveis.
 

@@ -1,6 +1,6 @@
 rules
 
-get-procs-param = filter(?Declaration(ProcedureParam(_,_,_)))
+get-procs-param = filter(?Declaration(ProcParam(_,_,_)))
 get-procs = filter(?Declaration(Procedure(_,_)))
 get-commands = filter(?Instr(_))
 get-vars = filter(?Declaration(Variable(_,_)))

@@ -1,0 +1,4 @@
+rules
+
+statement-definition: [] -> [$[SKIP]]
+statement-definition: [s | ps] -> [<to-csp> s  | <statement-definition> ps]

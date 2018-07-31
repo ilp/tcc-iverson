@@ -1,0 +1,4 @@
+rules
+
+put-param-mem: [] -> []
+put-param-mem: [ID(n) | ps] -> ["set.",n,"!(",n,"Param) -> \n" | <put-param-mem> ps ]

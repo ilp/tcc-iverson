@@ -1,0 +1,18 @@
+...
+
+right
+    
+repeatWhile(frontIsClear){
+    countLeft()
+    countRight()  
+    forward
+    countForward = countForward + 1
+}
+
+countLeft()
+countRight()  
+show(countFirstLine)
+show(countLastLine)
+showsMoreBoxes()
+getBoxFirstLine()
+getBoxLastLine()

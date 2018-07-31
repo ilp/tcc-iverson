@@ -1,0 +1,15 @@
+rules
+
+statement-definition-decl: [] -> []
+statement-definition-decl: [Declaration(s) | ps] -> [<to-csp> s  | <statement-definition-decl> ps]
+
+to-csp: 
+	ProcParam(ID(name), Params(params), procedureBody) ->
+	$[[name]Proc([params']) =
+		[paramVar']
+		[procedureBody']		
+	]
+	with
+	 paramVar'      := <put-param-mem> params;
+	 procedureBody' := <statement-definition> procedureBody;
+	 params'        := <get-param-names> params

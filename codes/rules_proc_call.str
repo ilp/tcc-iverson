@@ -1,0 +1,15 @@
+rules
+
+get-param-names-call: ExpMath(es) -> <get-param-names-call> es
+get-param-names-call: [] -> []
+get-param-names-call: [ExpMath(exp)] -> [exp'] 
+	with exp' := <to-csp-e> exp 
+get-param-names-call: [ExpMath(exp) | es] -> [exp', "," | <get-param-names-call> es ] 
+	with exp' := <to-csp-e> exp
+	
+get-param-names-call: ExpBool(es) -> <get-param-names-call> es
+get-param-names-call: [] -> []
+get-param-names-call: [ExpBool(exp)] -> [exp'] 
+	with exp' := <to-csp-e> exp 
+get-param-names-call: [ExpBool(exp) | es] -> [exp', "," | <get-param-names-call> es ] 
+	with exp' := <to-csp-e> exp

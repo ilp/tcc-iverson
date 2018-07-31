@@ -1,0 +1,24 @@
+rules
+
+to-csp:
+	FORWARD(n) -> 
+	$[[vars']
+	FORWARD([n'])
+	  ;
+	]
+	with
+		vars' := <put-get-var-exp-analyze> <get-vars-exp> n;
+		n' := <to-csp-e> n
+		
+to-csp:
+    SHOW(ExpMath(e)) -> 
+    $[[vars']
+    showInt!([e']) ->]
+    with
+    	vars' := <put-get-var-exp-analyze> <get-vars-exp> e;
+    	e'    := <to-csp-e-var> e
+
+to-csp:
+    END() -> 
+    $[STOP
+      ;]
