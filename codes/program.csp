@@ -1,0 +1,41 @@
+countBoxesConst = 0
+lookLineConst = 0
+
+nametype MAXVAR = {0..10}
+datatype VarType = side.MAXVAR | countBoxes.MAXVAR | lookLine.MAXVAR |  X.TX | Y.TY | ORIENTATION.TO | BX.TBX | BY.TBY
+INIT = { (side,0), (countBoxes,0), (lookLine,0), (X, startX), (Y, startY), (ORIENTATION, NORTH_), (BX, startBX), (BY, startBY) }
+
+countLineProc(sideParam) =
+    set.side!(sideParam) -> 
+    (let
+        IFELSE = 
+            get.X?x -> 
+            get.Y?y -> 
+            get.ORIENTATION?o -> 
+            get.BX?bx -> 
+            get.BY?by -> 
+            coin?c ->
+            get.side?sideVar ->
+            
+            if((sideVar == 1)) then ( ... ) 
+            ...
+    within
+	    IFELSE
+    )
+
+COMMANDS = 
+    RIGHT
+    ; 
+    (let
+        WHILE = 
+            ...
+    within
+        WHILE
+    )
+    ;
+    get.lookLine?lookLineVar ->
+    countLineProc(lookLineVar)
+    ;
+    get.countBoxes?countBoxesVar ->
+    showInt!(countBoxesVar) ->
+    SKIP

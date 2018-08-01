@@ -1,7 +1,12 @@
 Program(
   [ Declaration(Variable(ID("countBoxes"), ExpMath(Num("0"))))
   , Declaration(Variable(ID("lookLine"), ExpMath(Num("1"))))
-  , Declaration(ProcParam(...))
+  , Declaration(
+        ProcParam(ID("countLine")
+                , Params([ID("side")])
+                , [...]
+        )
+    )
   , Instr(RIGHT())
   , Instr(
       RPTWLE(

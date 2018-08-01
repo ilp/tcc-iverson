@@ -1,9 +1,14 @@
 \chapter{Implementação}
 
-Este capítulo tem por objetivo mostrar, em um exemplo prático, resultados de uso do compilador desenvolvido nesta pesquisa em conjunto as demais ferramentas de modo que o processo de verificação ocorra como esperado. Na seção \ref{sub:sec41} é explicado como foi realizada a integração do compilador com o verificador de modelos. Na seção x 
+Este capítulo tem por objetivo mostrar, em um exemplo prático, resultados de uso do compilador desenvolvido nesta pesquisa em conjunto as demais ferramentas de modo que o processo de verificação ocorra como esperado.
 
-\section{Ferramenta de Verificação (RobotChecker)*}
-\label{sub:sec41}
+\section{Experimento Realizado}
+\label{sub:exper}
+
+No Capítulo \ref{chap:cap3} foi apresentado um exemplo adaptado de \cite{furb} que foi utilizado para mostrar na prática o desenvolvimento do compilador. Para este experimento, vamos utilizar esse mesmo exemplo, no entanto, em sua versão completa que é descrita na subseção \ref{sub:subdefprob}.
+
+\subsection{Ferramenta de Verificação (RobotChecker)}
+\label{sub:robotch}
 
 Um dos objetivos desta pesquisa é o desenvolvimento de um protótipo funcional de uma ferramenta que integre o compilador com o verificador de modelos de modo transparente ao usuário do RoboMind. Posto isso, foi proposto um protótipo desenvolvido em Java de um serviço que provê as principais funcionalidades para a verificação automática dos programas ROBO. Para simular em um ambiente real, foi desenvolvido um método que é responsável por enviar os programas ROBO e seus respectivos mapas ao serviço, e como resultado é obtido o resultado da verificação e um contra-exemplo (\textit{traces}), caso existir.
 
@@ -13,12 +18,6 @@ No protótipo proposto foram implementados os principais métodos para realizar 
     \item Tradução de ROBO para CSP: recebe um programa ROBO como entrada e chama a API do Spoofax para realizar a tradução usando o compilador desenvolvido por esta pesquisa e como saída é gerado um CSP equivalente.
     \item Verificação das propriedades no FDR: recebe como entrada o mapa e o programa escritos em CSP, resultado da tradução automatizada; e como saída gera os resultados das verificações e os \textit{traces} resultantes.
 \end{itemize}
-
-Na seção seguinte estão definidos os passos executados para validar a integração do compilador com o FDR.
-
-\section{Experimento Realizado}
-\label{sub:sec42}
-No Capítulo \ref{chap:cap3} foi apresentado um exemplo adaptado de \cite{furb} que foi utilizado para mostrar na prática o desenvolvimento do compilador. Para este experimento, vamos utilizar esse mesmo exemplo, no entanto, em sua versão completa que é descrita na subseção \ref{sub:subdefprob}.
 
 \subsection{Definição do problema}
 \label{sub:subdefprob}
@@ -36,17 +35,17 @@ Definido o problema, como próximo passo foi desenvolver uma solução para esse
 
 \begin{figure}[h]
 \centering
-\caption{Solução proposta para o problema Contando Caixas}
+\caption{Solução proposta em ROBO para o problema Contando Caixas}
 \lstinputlisting[language=Java]{codes/solution.rob}
 \fonte{O autor}
 \label{fig:solution}
 \end{figure}
 
-Para validar a efetividade do compilador em integração com FDR, foi necessário verificar as saídas geradas pelo prótotipo e executar os traces gerados no ambiente RoboMind e as saídas geradas pelo FDR, além disso o FDR provê se a solução está livre de \textit{deadlock}, uma propriedade que o RoboMind não verifica. Na próxima seção estão os resultados obtido em ambas ferramentas.
+Para validar a efetividade do compilador integrado ao FDR, foi necessário verificar as saídas geradas pelo protótipo e executar os traces gerados no ambiente RoboMind, além disso o protótipo obtém o resultado de uma das propriedades: \texttt{assert PROGRAM :[deadlock free [F]]}. Na próxima seção estão descritos os resultados gerados pela ferramenta.
 
-\subsection{Resultados gerados}
-\label{sub:sec43}
-
+\section{Resultados gerados}
+\label{sub:results}
+...
 \begin{table}[]
 \caption{Resultado obtido após a verificação do FDR}
 \resizebox{\textwidth}{!}{%
@@ -72,8 +71,6 @@ show(3) & show(1) & show(1)
 \fonte{O autor}
 \end{table}
 
-\subsection{Análise dos resultados}
-\label{sub:sec44}
-Levando-se em conta o que foi observado, para os três mapas analisados, comparando as saídas geradas pelo RoboMind e pela ferramenta proposta, é notório que a tradução dos programas foram realizadas corretamente, isto é, os programas CSP são semanticamente equivalentes a ROBO.
+Levando-se em conta o que foi observado, para os três mapas analisados, comparando as saídas geradas pelo RoboMind e pela ferramenta proposta, é notório que a tradução do programa foi realizado corretamente, isto é, os programas CSP são representados semanticamente equivalentes a ROBO.
 
 
