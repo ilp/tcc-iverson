@@ -1,11 +1,11 @@
-countBoxesConst = 0
-lookLineConst = 0
+counterConst = 0
+lookLeftConst = 0
 
 nametype MAXVAR = {0..10}
-datatype VarType = side.MAXVAR | countBoxes.MAXVAR | lookLine.MAXVAR |  X.TX | Y.TY | ORIENTATION.TO | BX.TBX | BY.TBY
-INIT = { (side,0), (countBoxes,0), (lookLine,0), (X, startX), (Y, startY), (ORIENTATION, NORTH_), (BX, startBX), (BY, startBY) }
+datatype VarType = side.MAXVAR | counter.MAXVAR | lookLeft.MAXVAR |  X.TX | Y.TY | ORIENTATION.TO | BX.TBX | BY.TBY
+INIT = { (side,0), (counter,0), (lookLeft,0), (X, startX), (Y, startY), (ORIENTATION, NORTH_), (BX, startBX), (BY, startBY) }
 
-countLineProc(sideParam) =
+countBoxesProc(sideParam) =
     set.side!(sideParam) -> 
     (let
         IFELSE = 
@@ -33,9 +33,9 @@ COMMANDS =
         WHILE
     )
     ;
-    get.lookLine?lookLineVar ->
-    countLineProc(lookLineVar)
+    get.lookLeft?lookLeftVar ->
+    countBoxesProc(lookLeftVar)
     ;
-    get.countBoxes?countBoxesVar ->
-    showInt!(countBoxesVar) ->
+    get.counter?counterVar ->
+    showInt!(counterVar) ->
     SKIP

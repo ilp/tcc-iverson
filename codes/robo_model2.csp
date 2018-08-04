@@ -1,0 +1,23 @@
+...
+channel forward : {1}
+
+MOVE_STEPS(0,o) = SKIP
+MOVE_STEPS(n,o) = 
+    get!X?x ->
+    get!Y?y ->
+    get!BX?bx ->
+    get!BY?by ->   
+    if(o == NORTH_) then (
+        if(frontIsClear(x,y,o,bx,by)) then
+          forward!1 -> set.Y!(y - 1) -> MOVE_STEPS(n-1, o)
+        else 
+          forward!1 -> MOVE_STEPS(0, o)
+    )
+    ...
+...
+FORWARD(n) = get!ORIENTATION?o -> MOVE_STEPS(n,o)
+...
+channel right
+
+RIGHT = right -> get!ORIENTATION?o -> set!ORIENTATION!(o+1)%4 ->  SKIP
+...

@@ -1,6 +1,6 @@
 Declaration(
   ProcParam(
-    ID("countLine")
+    ID("countBoxes")
   , Params([ID("side")])
   , [ ... ]
   )

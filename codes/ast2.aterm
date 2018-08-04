@@ -1,8 +1,8 @@
 Program(
-  [ Declaration(Variable(ID("countBoxes"), ExpMath(Num("0"))))
-  , Declaration(Variable(ID("lookLine"), ExpMath(Num("1"))))
+  [ Declaration(Variable(ID("counter"), ExpMath(Num("0"))))
+  , Declaration(Variable(ID("lookLeft"), ExpMath(Num("1"))))
   , Declaration(
-        ProcParam(ID("countLine")
+        ProcParam(ID("countBoxes")
                 , Params([ID("side")])
                 , [...]
         )
@@ -12,15 +12,15 @@ Program(
       RPTWLE(
         FROISCLR()
       , [ Instr(
-            ProcCall(ID("countLine"), ExprParams([ExpMath(Var("lookLine"))]))
+            ProcCall(ID("countBoxes"), ExprParams([ExpMath(Var("lookLeft"))]))
           )
         , Instr(FORWARD(Num("1")))
         ]
       )
     )
   , Instr(
-      ProcCall(ID("countLine"), ExprParams([ExpMath(Var("lookLine"))]))
+      ProcCall(ID("countBoxes"), ExprParams([ExpMath(Var("lookLeft"))]))
     )
-  , Instr(SHOW(ExpMath(Var("countBoxes"))))
+  , Instr(SHOW(ExpMath(Var("counter"))))
   ]
 )

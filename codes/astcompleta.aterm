@@ -1,0 +1,64 @@
+Program(
+  [ Declaration(Variable(ID("counter"), ExpMath(Num("0"))))
+  , Declaration(Variable(ID("lookLeft"), ExpMath(Num("0"))))
+  , Declaration(
+      ProcedureParam(
+        ID("countBoxes")
+      , Params([ID("side")])
+      , [ Instr(
+            IF(
+              EqMath(Var("side"), Num("1"))
+            , [ Instr(
+                  IF(
+                    LEFISOBS()
+                  , [ Declaration(
+                        Variable(
+                          ID("counter")
+                        , ExpMath(Add(Var("counter"), Num("1")))
+                        )
+                      )
+                    ]
+                  , None()
+                  )
+                )
+              ]
+            , Some(
+                ELSE(
+                  [ Instr(
+                      IF(
+                        RIGISOBS()
+                      , [ Declaration(
+                            Variable(
+                              ID("counter")
+                            , ExpMath(Add(Var("counter"), Num("1")))
+                            )
+                          )
+                        ]
+                      , None()
+                      )
+                    )
+                  ]
+                )
+              )
+            )
+          )
+        ]
+      )
+    )
+  , Instr(RIGHT())
+  , Instr(
+      RPTWLE(
+        FROISCLR()
+      , [ Instr(
+            ProcCall(ID("countBoxes"), ExprParams([ExpMath(Var("lookLeft"))]))
+          )
+        , Instr(FORWARD(Num("1")))
+        ]
+      )
+    )
+  , Instr(
+      ProcCall(ID("countBoxes"), ExprParams([ExpMath(Var("lookLeft"))]))
+    )
+  , Instr(SHOW(ExpMath(Var("counter"))))
+  ]
+)

@@ -1,14 +1,14 @@
-countBoxes = 0
-lookLine = 1
+counter = 0
+lookLeft = 1
 
-procedure countLine(side){
+procedure countBoxes(side){
     if(side == 1){
         if(leftIsObstacle){
-            countBoxes = countBoxes + 1            
+            counter = counter + 1            
         }
     } else {
         if(rightIsObstacle){
-            countBoxes = countBoxes + 1
+            counter = counter + 1
         }
     }
 }
@@ -16,9 +16,9 @@ procedure countLine(side){
 right
 
 repeatWhile(frontIsClear){
-    countLine(lookLine) 
+    countBoxes(lookLeft) 
     forward(1)
 }
 
-countLine(lookLine)
-show(countBoxes)
+countBoxes(lookLeft)
+show(counter)

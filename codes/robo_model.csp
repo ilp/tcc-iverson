@@ -1,0 +1,16 @@
+...
+datatype VarType = X.TX | Y.TY | ORIENTATION.TO | BX.TBX | BY.TBY
+
+channel get,set : VarType
+
+Mcel(v,val) = get!v!val -> Mcel(v,val) 
+              [] set!v?val_ -> Mcel(v,val_)
+
+Memory(binding) = ||| (v,val) : binding @ Mcel(v,val)
+
+INIT = { (X, startX), (Y, startY), (ORIENTATION, NORTH_), (BX, startBX), (BY, startBY) }
+
+MEMORY = Memory(INIT)
+...
+PROGRAM_DEBUG = COMMANDS [|{|get,set|}|] MEMORY
+PROGRAM = PROGRAM_DEBUG \ {|get,set,coin|}

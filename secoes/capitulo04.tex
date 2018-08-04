@@ -1,14 +1,11 @@
-\chapter{Implementação}
+\chapter{Implementação} %não sei como chamar este capitulo
 
 Este capítulo tem por objetivo mostrar, em um exemplo prático, resultados de uso do compilador desenvolvido nesta pesquisa em conjunto as demais ferramentas de modo que o processo de verificação ocorra como esperado.
 
 \section{Experimento Realizado}
 \label{sub:exper}
 
-No Capítulo \ref{chap:cap3} foi apresentado um exemplo adaptado de \cite{furb} que foi utilizado para mostrar na prática o desenvolvimento do compilador. Para este experimento, vamos utilizar esse mesmo exemplo, no entanto, em sua versão completa que é descrita na subseção \ref{sub:subdefprob}.
-
-\subsection{Ferramenta de Verificação (RobotChecker)}
-\label{sub:robotch}
+No Capítulo \ref{chap:cap3} foi apresentado um exemplo adaptado de \cite{furb} que foi utilizado para mostrar na prática o desenvolvimento do compilador. Para este experimento, vamos utilizar esse mesmo exemplo, no entanto, em sua versão completa que é descrita na subseção \ref{sec:defprob}.
 
 Um dos objetivos desta pesquisa é o desenvolvimento de um protótipo funcional de uma ferramenta que integre o compilador com o verificador de modelos de modo transparente ao usuário do RoboMind. Posto isso, foi proposto um protótipo desenvolvido em Java de um serviço que provê as principais funcionalidades para a verificação automática dos programas ROBO. Para simular em um ambiente real, foi desenvolvido um método que é responsável por enviar os programas ROBO e seus respectivos mapas ao serviço, e como resultado é obtido o resultado da verificação e um contra-exemplo (\textit{traces}), caso existir.
 
@@ -19,8 +16,8 @@ No protótipo proposto foram implementados os principais métodos para realizar 
     \item Verificação das propriedades no FDR: recebe como entrada o mapa e o programa escritos em CSP, resultado da tradução automatizada; e como saída gera os resultados das verificações e os \textit{traces} resultantes.
 \end{itemize}
 
-\subsection{Definição do problema}
-\label{sub:subdefprob}
+\section{Definição do problema}
+\label{sec:defprob}
 O problema consiste em um mundo de 6 colunas e 3 linhas, onde o robô sempre inicia na primeira coluna da segunda linha e e com caixas distribuídas aleatoriamente na primeira e última linha. O objetivo é fazer o robô andar até a última coluna e dizer a quantidade de ciaxas que existem na prieira e última linha, e dizer quais das duas linhas tem mais caixas: sendo 1 para a primeira linha, 2 para a última e 3 se ambas possuem a mesma quantidade. Outro ponto, é que se a quantidade não for igual, deve-se dizer a diferença de caixas que existem entre as linhas. O robô também deve dizer em qual das linhas apareceu a primeira caixa e em qual das linhas apareceu a última caixa: 1 - para a primeira linha; 2 - para a segunda; e 3 para ambas. Para melhor ilustar o experimento, considere os mapas apresentados na Figura \ref{fig:problem}, para cada um dos três mapas apresentados o robô deve mostrar as respectivas saídas.
 
 \begin{figure}[h]
@@ -36,14 +33,14 @@ Definido o problema, como próximo passo foi desenvolver uma solução para esse
 \begin{figure}[h]
 \centering
 \caption{Solução proposta em ROBO para o problema Contando Caixas}
-\lstinputlisting[language=Java]{codes/solution.rob}
+\lstinputlisting{codes/solution.rob}
 \fonte{O autor}
 \label{fig:solution}
 \end{figure}
 
 Para validar a efetividade do compilador integrado ao FDR, foi necessário verificar as saídas geradas pelo protótipo e executar os traces gerados no ambiente RoboMind, além disso o protótipo obtém o resultado de uma das propriedades: \texttt{assert PROGRAM :[deadlock free [F]]}. Na próxima seção estão descritos os resultados gerados pela ferramenta.
 
-\section{Resultados gerados}
+\section{Resultados}
 \label{sub:results}
 ...
 \begin{table}[]
