@@ -9,7 +9,7 @@ O presente capítulo apresenta os principais conceitos utilizados neste trabalho
 
 %\subsection{Ambiente RoboMind}
 
-RoboMind\footnote[2]{http://robomind.net/} é um ambiente de programação de robôs virtuais para o ensino e aprendizagem de robótica. A Figura \ref{fig:robomind} ilustra a versão desktop deste ambiente que possui uma interface com um espaço para a escrita do programa que controla o robô virtual e um outro espaço onde o aluno pode acompanhar a execução (simulação) do robô em um mapa. Nesse ambiente, os programas são escritos na linguagem ROBO, uma linguagem educacional desenvolvida para a programação de robôs que oferece os principais comandos de programação: estruturas condicionais, estruturas de repetição, procedimentos e declaração de variáveis. O lado esquerdo da Figura \ref{fig:robomind} mostra um exemplo de programa ROBO que movimenta o robô enquanto o objeto (\texttt{beacon}) não é detectado à sua frente. Neste programa, se não há nenhum obstáculo à sua frente, o robô avança uma célula (comando \texttt{forward}), caso contrário o robô recua uma célula (comando \texttt{backward}) e muda sua orientação para a direita (comando \texttt{right}).
+RoboMind\footnote[3]{http://robomind.net/} é um ambiente de programação de robôs virtuais para o ensino e aprendizagem de robótica. A Figura \ref{fig:robomind} ilustra a versão desktop deste ambiente que possui uma interface com um espaço para a escrita do programa que controla o robô virtual e um outro espaço onde o aluno pode acompanhar a execução (simulação) do robô em um mapa. Nesse ambiente, os programas são escritos na linguagem ROBO, uma linguagem educacional desenvolvida para a programação de robôs que oferece os principais comandos de programação: estruturas condicionais, estruturas de repetição, procedimentos e declaração de variáveis. O lado esquerdo da Figura \ref{fig:robomind} mostra um exemplo de programa ROBO que movimenta o robô enquanto o objeto (\texttt{beacon}) não é detectado à sua frente. Neste programa, se não há nenhum obstáculo à sua frente, o robô avança uma célula (comando \texttt{forward}), caso contrário o robô recua uma célula (comando \texttt{backward}) e muda sua orientação para a direita (comando \texttt{right}).
 
 \begin{figure}[ht]
 \centering
@@ -43,6 +43,7 @@ Para exemplificar a abordagem de tradução, introduzimos um exemplo de programa
 \label{fig:map}
 \end{figure}
 
+%Iverson: adicionei este paragrafo explicando sobre mapa no robomind
 Um mapa no RoboMind é representado textualmente por um conjunto de letras para representar cada elemento do mapa. A Figura \ref{fig:maprobo} mostra a representação textual do mapa ilustrado na figura anterior. O carácter \texttt{@} representa o robô, as caixas são denotadas pela letra \texttt{Q} e as paredes pelos demais caracteres.
 
 \begin{figure}[h]
@@ -51,17 +52,6 @@ Um mapa no RoboMind é representado textualmente por um conjunto de letras para 
 \lstinputlisting[xleftmargin=4cm,xrightmargin=4cm]{codes/map.map}
 \fonte{O autor}
 \label{fig:maprobo}
-\end{figure}
-
-A Figura \ref{fig:roboprogram} mostra um programa ROBO que resolve o problema da contagem de caixas. 
-Esse programa possui duas variáveis globais: \texttt{counter} que armazena a quantidade de caixas encontradas; e \texttt{lookLeft} que indica qual a linha que o robô deve contar as caixas. O código também possui um procedimento parametrizado chamado \texttt{countBoxes()} com o parâmetro chamado \texttt{side}, cujo valor indica o lado em que o robô vai contar as caixas. Se o valor de \texttt{side} é igual a 1, o robô conta as caixas no seu lado esquerdo (primeira linha do mapa);  quando o parâmetro possui outros valores o robô conta as caixas do lado direito (segunda linha do mapa). O primeiro comando do programa do robô é o comando \texttt{right} (indicado na linha 16), o qual altera sua orientação em 90 graus para a direita. O próximo passo é a execução de um laço pelo comando \texttt{repeatWhile}, o laço ocorre enquanto não houver quaisquer objetos ou paredes na célula à frente do robô. Esse laço é responsável por chamar o procedimento \texttt{countBoxes()} passando o valor da variável \texttt{lookLeft}, que neste exemplo tem valor 1, ou seja, contará as caixas da linha esquerda, seguindo de um \texttt{forward} que move o robô para frente em uma unidade a cada execução do laço. Ao sair dessa estrutura de repetição, o procedimento será executado mais uma vez, com o objetivo de verificar possíveis caixas na última posição do robô e por fim a quantidade de caixas é exibida por meio do comando \texttt{show} exibindo o valor armazenado na variável \texttt{counter} contendo a quantidade de caixas na linha de interesse. 
-A execução deste programa faz o robô percorrer em linha reta contando as caixas à sua esquerda e parar na posição final, quando o programa mostra o resultado 2 (quantidade de caixas encontradas na primeira linha). Caso a variável \texttt{lookLeft} seja inicializada com o valor 0, o programa contaria as caixas encontradas à direita do robô, portanto o valor impresso pelo programa seria 3. 
-
-\begin{figure}[h]
-\caption{Programa escrito em ROBO}
-\lstinputlisting{codes/program1.rob}
-\fonte{O autor}
-\label{fig:roboprogram}
 \end{figure}
 
 %\textbf{um parágrafo dizendo que não existe verificação automática de robôs educacionais. Motivar porque verificação de robôs é importante . Isto tem um pouco na introdução mas precisa colocar aqui novamente. Neste parágrafo aproveitar e dizer que verificação de modelos pode ajudar na verificação automática que é o assunto da próxima seção.}
@@ -85,7 +75,7 @@ Verificação de modelos consiste em utilizar como entradas para uma ferramenta 
 
 A técnica Verificação Dedutiva, diferentemente da Verificação de Modelos, é manual e requer maior conhecimento e experiência do usuário, entretanto, considera todos os estados possíveis do sistema, mesmo que sejam infinitos \cite{FEIGN}. Neste trabalho usamos Verificação de Modelos escritos na notação formal CSP para a verificação automática de programas escritos na linguagem robô.
 
-\section{Communicatting Sequential Processes}
+\section{Modelo CSP para programas ROBO}
 \label{sec:csp}
 \textit{Communicatting Sequential Processes} (CSP) é uma álgebra de processos usada na especificação formal de sistemas concorrentes e distribuídos \cite{Cleaveland2018}. Essa notação é composta por processos e eventos que são utilizados para a especificação de um sistema. Eventos são uma abstração para ocorrência de ações do sistema ou do usuário como, por exemplo, os comandos de movimentação do robô podem ser modelados como eventos. Processos definem a ordem de ocorrência dos eventos \cite{Roscoe2010}. Na sintaxe de CSP, \texttt{P = e1 -> ... -> en -> Q} representa um processo \texttt{P} que comunica uma sequência de eventos \texttt{e$_i$}, separados pelo operador de prefixo de CSP (\texttt{->}) e se comporta como o processo \texttt{Q} após comunicar o último evento.
 
@@ -101,14 +91,25 @@ A inicialização da memória ocorre através do processo \texttt{MEMORY} passan
 \fonte{\cite{nogueira}}
 \label{fig:model}
 \end{figure}
-
-O processo \texttt{COMMANDS} como dito anteriormente, 
+%Iverson: Adicionei esse paragráfo explicando um pouco sobre COMMANDS
+O processo \texttt{COMMANDS}, como dito anteriormente, é onde os comandos modelados em CSP de ROBO são chamados quando a tradução é realizada. A Figura \ref{fig:programcsp} apresenta um fragmento da tradução realizada para o programa ROBO ilustrado na Figura \ref{fig:roboprogram}. Os comandos de robô são adicionados sequencialmente para comunicar alguns eventos em CSP para simular ocorrências dos comandos em ROBO. Na Figura \ref{fig:programcsp}, o comando \texttt{repeatWhile} (linha 18 da Figura \ref{fig:roboprogram}) é representado pelas linhas de 5 a 26, onde \texttt{let} é utilizado para modelar outros processos em um escopo específico; esses processos são chamados após a palavra reservada \texttt{within}, no caso é chamado o processo interno \texttt{WHILE} para simular um laço enquanto a função \texttt{frontIsClear} retornar verdadeiro. Essa tradução foi realizada utilizando a abordagem automática proposta por este trabalho que será explicada no Capítulo \ref{chap:cap3}.
 
 \begin{figure}[h]
 \caption{Especificação em CSP de um programa ROBO}
 \lstinputlisting{codes/commands.csp}
 \fonte{O autor}
 \label{fig:programcsp}
+\end{figure}
+
+%Iverson: adicionei este parágrafo explicando sobre o mapa em csp
+
+A tradução atual do mapa ROBO é realizada automaticamente para a notação CSP. A Figura \ref{fig:mapcsp} mostra o resultado da tradução realizada para o mapa ilustrado pela Figura \ref{fig:map} que é armazenado em \texttt{RAW\_MAP} em forma de sequência. Cada elemento da sequência representa uma linha do mapa. O valor \texttt{Obs} é usado para representar os obstáculos do mapa, como paredes ou caixas; \texttt{Empty} é usado para as células vazias; e \texttt{Start} representa a posição inicial do robô.
+
+\begin{figure}[h]
+\caption{Especificação em CSP de um mapa ROBO}
+\lstinputlisting{codes/map.csp}
+\fonte{O autor}
+\label{fig:mapcsp}
 \end{figure}
 
 %Para simular os comandos utilizados na programação do robô no RoboMind, em um trabalho anterior, especificamos alguns processos, por exemplo para movimentar o robô e alterar sua orientação. 
@@ -123,18 +124,9 @@ Ainda na Figura \ref{fig:model2}, apresenta o processo \texttt{RIGHT} equivalent
 \label{fig:model2}
 \end{figure}
 
-A tradução atual do mapa ROBO é realizada automaticamente para a notação CSP. A Figura \ref{fig:mapcsp} mostra o resultado da tradução realizada para o mapa ilustrado pela Figura \ref{fig:map} que é armazenado em \texttt{RAW\_MAP} em forma de sequência. Cada elemento da sequência representa uma linha do mapa. O valor \texttt{Obs} é usado para representar os obstáculos do mapa, como paredes ou caixas; \texttt{Empty} é usado para as células vazias; e \texttt{Start} representa a posição inicial do robô.
-
-\begin{figure}[h]
-\caption{Especificação em CSP de um mapa ROBO}
-\lstinputlisting{codes/map.csp}
-\fonte{O autor}
-\label{fig:mapcsp}
-\end{figure}
-
 \subsection{Verificador de Modelos FDR}
 
-Uma especificação CSP pode ser verificada através de um verificador de modelos. Existem várias ferramentas que podem ser utilizadas para este fim, as mais conhecidas são FDR\footnote[3]{https://www.cs.ox.ac.uk/projects/fdr/}, ProB\footnote[4]{https://www3.hhu.de/stups/prob} e PAT\footnote[5]{http://pat.comp.nus.edu.sg/}. Destas, a ferramenta FDR (\textit{Failures Divergence Refinement}) é a mais madura e utilizada; sua versão atual é FDR4 \cite{Gibson}. Por este motivo, este trabalho adota FDR4 como verificador de modelos.
+Uma especificação CSP pode ser verificada através de um verificador de modelos. Existem várias ferramentas que podem ser utilizadas para este fim, as mais conhecidas são FDR\footnote[4]{https://www.cs.ox.ac.uk/projects/fdr/}, ProB\footnote[5]{https://www3.hhu.de/stups/prob} e PAT\footnote[6]{http://pat.comp.nus.edu.sg/}. Destas, a ferramenta FDR (\textit{Failures Divergence Refinement}) é a mais madura e utilizada; sua versão atual é FDR4 \cite{Gibson}. Por este motivo, este trabalho adota FDR4 como verificador de modelos.
 
 O verificador de modelos FDR, como citado, é o verificador de refinamento mais difundido para a álgebra de processo CSP. Este verificador utiliza a lista de processos CSP da especificação, e é capaz de verificar se os processos refinam uns aos outros de acordo com os modelos disponíveis na ferramenta: \textit{traces} ; falhas (\textit{failures}); e falhas modelos de divergências (\textit{failures-divergences-models}). Além disso, é capaz de verificar outras propriedades: se o modelo está livre de \textit{deadlock} (\textit{deadlock-free}); se está livre de \textit{livelock} (\textit{livelock-free}) e verificação de determinismo \cite{Gibson}.
 
@@ -146,6 +138,16 @@ A Figura \ref{fig:assertion} exibe um exemplo de verificação de uma propriedad
 \includegraphics[height=10cm]{figuras/assertion.png}
 \fonte{O autor}
 \label{fig:assertion}
+\end{figure}
+%Iverson: adicionei esse paragrafo falando sobre um contraexemplo gerado apos a falha da verificacao no FDR
+Como o resultado dessa verificação falhou o FDR exibe na interface um contraexemplo indicando o ponto no qual a falha aconteceu. A Figura \ref{fig:counterexem} apresenta o contraexemplo da verificação da propriedade \texttt{:[deadlock free [F]]} para o processo \texttt{PROGRAM}. Onde é possível ver a sequência de eventos comunicados no processo \texttt{COMMANDS}. Analisando os \textit{traces}, sabemos que esse processo comunicou o evento \texttt{right} inicialmente, seguido por cinco eventos \texttt{forward.1} e finalizou comunicando \texttt{showInt.2}, este mostra a quantidade de caixas à esquerda do robô, equivalente ao comando \texttt{show} em ROBO. Comparando com o programa ROBO descrito pela Figura \ref{fig:roboprogram} é possível notar que o último comando que o robô realizar é \texttt{show(counter)}.
+
+\begin{figure}[h]
+\centering
+\caption{Contraexemplo gerado pelo FDR}
+\includegraphics[height=2cm]{figuras/contraexe.png}
+\fonte{O autor}
+\label{fig:counterexem}
 \end{figure}
 
 %A ferramenta FDR ainda provê um \textit{feedback} visual da especificação dos sistemas. Está disposto na Figura \ref{fig:graph} parte da máquina de estados de um processo chamado \texttt{COMMANDS}. Cada estado representa um possível evento que possa ocorrer e em cada um deles há os possíveis outros estados que são acessíveis pelos os mesmos. Por exemplo, o evento inicial \texttt{right} pode dar origem a outros quatro eventos: \texttt{get.ORIENTATION.0}, \texttt{get.ORIENTATION.1}, \texttt{get.ORIENTATION.2} ou \texttt{get.ORIENTATION.3}.
@@ -175,7 +177,7 @@ Para criar um compilador da linguagem ROBO para CSP é necessário um mecanismo 
 
 Spoofax\footnote[6]{http://www.metaborg.org/} é uma plataforma para desenvolvimento textual de linguagens de programação. Esta plataforma permite o desenvolvimento através de um ambiente interativo usando metalinguagens (\textit{meta-languages)} para definição de linguagem declarativa de alto nível. Além disso, possui geradores de código que produzem analisadores (\textit{parses}), checagem de tipo, compiladores, interpretadores e outras ferramentas. A vantagem de usar Spoofax é o foco na essência da definição da linguagem, ignorando detalhes irrelevantes da implementação \cite{KatsSpoofax}.
 
-Um projeto em Spoofax possui uma arquitetura muito bem estruturada, seguindo alguns princípios. Primeiro, separação de interesses, por exemplo, separa definição de sintaxe da definição da semântica estática. Segundo, não repete aspectos da linguagem em diferentes implementações, objetivando a geração de diferentes artefatos a partir de um único código. Por último, a definição de linguagem declarativa ocorre de modo independente, onde cada tipo de implementação possui sua própria linguagem correspondente. Por exemplo, para definição de sintaxe utiliza o formalismo SDF3, já para a parte de transformação, utiliza-se a linguagem Stratego \cite{KatsSpoofax}. Spoofax ainda provê outras metalinguagens, como por exemplo NaBL2, utilizada para a checagem semântica da linguagem, o que inclui checagem de nomes e análise de tipos. 
+Um projeto em Spoofax possui uma arquitetura muito bem estruturada, seguindo alguns princípios. Primeiro, separação de interesses, por exemplo, separa definição de sintaxe da definição da semântica estática. Segundo, não repete aspectos da linguagem em diferentes implementações, objetivando a geração de diferentes artefatos a partir de um único código. Por último, a definição de linguagem declarativa ocorre de modo independente, onde cada tipo de implementação possui sua própria linguagem correspondente. Por exemplo, para definição de sintaxe utiliza o formalismo SDF3, já para a parte de transformação, utiliza-se a metalinguagem Stratego \cite{KatsSpoofax}. Spoofax ainda provê outras metalinguagens, como por exemplo NaBL2, utilizada para a checagem semântica da linguagem, o que inclui checagem de nomes e análise de tipos. 
 
 Para o escopo desse projeto, utilizamos SDF3 e Stratego, tendo em vista que a checagem de nomes e tipos da linguagem ROBO é realizada durante o desenvolvimento do programa dentro do ambiente RoboMind. 
 % sidney : um aprimoramento futuro é fazer a verificação de tipos usando Spoofax, uma vez que na atual abordagem, deixamos que a verificação de tipos seja feita por FDR o que obriga o usuário da ferramenta de verificação entender de CSP para entender o problema do código ROBO
@@ -219,7 +221,7 @@ produz uma árvore sintática não ambígua que é essencial para a etapa seguin
 
 Este projeto usa Stratego para traduzir automaticamente o código ROBO em CSP com finalidade de analisar automaticamente a corretude dos programas ROBO. Stratego é usado para definir a regra de transformação cada elemento sintático de ROBO para a respectiva representação em CSP.
 
-Stratego é uma linguagem para a definição de transformações aplicadas à uma AST. Essa metalinguagem tem uma notação capaz de construir e descontruir a árvore e usar reescrita de termos (\textit{term rewriting}), que basicamente reestrutura a árvore ou utiliza termos de interesse em uma determinada transformação. Essas transformações ocorrem em decorrência da definição de regras e estratégias. Os elementos da AST são representados por termos, como mostrado no arquivo \textit{Example.aterm} da Figura \ref{fig:sdf}. Esses termos estão na notação chamada de Formato de Termo Anotado (\textit{Annotated Term Format} - ATerm), uma notação que facilita a manipulação da árvore pelo Stratego  \cite{metaborg}. Por exemplo, em ROBO o comando \texttt{forward(n)} é denotado em \textit{ATerm} por \texttt{Instr(FORWARD(Var("n")))}.
+Stratego é uma metalinguagem para a definição de transformações aplicadas à uma AST. Essa metalinguagem tem uma notação capaz de construir e descontruir a árvore e usar reescrita de termos (\textit{term rewriting}), que basicamente reestrutura a árvore ou utiliza termos de interesse em uma determinada transformação. Essas transformações ocorrem em decorrência da definição de regras e estratégias. Os elementos da AST são representados por termos, como mostrado no arquivo \textit{Example.aterm} da Figura \ref{fig:sdf}. Esses termos estão na notação chamada de Formato de Termo Anotado (\textit{Annotated Term Format} - ATerm), uma notação que facilita a manipulação da árvore pelo Stratego  \cite{metaborg}. Por exemplo, em ROBO o comando \texttt{forward(n)} é denotado em \textit{ATerm} por \texttt{Instr(FORWARD(Var("n")))}.
 
 Uma regra em Stratego é definida como uma transformação aplicada em um ou mais termos. Uma regra é dada por \texttt{L : p1 -> p2}, onde \texttt{L} é o nome da regra, \texttt{p1} é o termo que deve casar com a regra e \texttt{p2} o termo reescrito. Como alternativa, a saída de uma regra pode ser textual, ao invés de um termo reescrito. Esta abordagem é chamada interpolação de \textit{string} \cite{KatsSpoofax}. Uma regra desse tipo é dada por \texttt{L : T(p) -> \$[[p]]}, no qual \texttt{L} é o nome da regra, \texttt{T(p)} o termo que deve casar com a regra, e o texto na linguagem destino é gerado com o conteúdo entre \texttt{\$[} e \texttt{]} utilizando o valor de \texttt{p}. Além disso, é possível aplicar outras regras a partir de \texttt{p} utilizando a palavra reservada \texttt{with} no fim da regra. As regras definidas em~\cite{nogueira} para mapear a AST de programas ROBO para CSP utiliza interpolação de \textit{strings}. As \textit{strings} produzidas como resultado da regra correspondem ao modelo CSP para o programa ROBO representado pela AST de entrada. Isso é demonstrado em detalhes na Seção \ref{chap:cap3}. 
 

@@ -1,0 +1,93 @@
+module ExpressionsBoolean
+
+imports 
+
+	Common
+ 	ExpressionsMath
+	
+sorts ExprBoolean
+
+context-free syntax 
+
+    ExprBoolean = <(<ExprBoolean>)> {bracket}
+
+    ExprBoolean.True 			= <true>  
+    ExprBoolean.False 			= <false>  
+    
+    ExprBoolean.Not 			= <not <ExprBoolean>> //Negates the value of the argument 
+    ExprBoolean.NotSimb 		= <~ <ExprBoolean>>
+    ExprBoolean.NotVar 			= <not <ExprMath>>
+    ExprBoolean.NotVarSimb 		= <~ <ExprMath>>
+    
+    ExprBoolean.And 			= <<ExprBoolean> and <ExprBoolean>> {assoc}//Only true when both arguments are true
+    ExprBoolean.AndSimb 		= <<ExprBoolean> & <ExprBoolean>> {assoc}
+    
+    ExprBoolean.Or 				= <<ExprBoolean> or <ExprBoolean>> {assoc} //True when at least one of the arguments is true
+    ExprBoolean.OrSimb 			= <<ExprBoolean> | <ExprBoolean>> {assoc}
+    
+    ExprBoolean.EqMath 			= <<ExprMath> == <ExprMath>> {non-assoc} //Check for equality
+    ExprBoolean.NeqMath			= <<ExprMath> ~= <ExprMath>> {non-assoc} //Check for inequality
+    ExprBoolean.EqBoolean		= <<ExprBoolean> == <ExprBoolean>> {non-assoc} //Check for equality
+    ExprBoolean.NeqBoolean		= <<ExprBoolean> ~= <ExprBoolean>> {non-assoc} //Check for inequality
+    ExprBoolean.LessT			= [[ExprMath] < [ExprMath]] {left} //"less than"
+    ExprBoolean.LessTorE		= [[ExprMath] <= [ExprMath]] {left} //"less than or equals"
+    ExprBoolean.GreaterT		= [[ExprMath] > [ExprMath]] {left} //"greater than"
+    ExprBoolean.GreaterTorE		= [[ExprMath] >= [ExprMath]] {left} //"greater than or equals"
+
+	//ProgrammingStructures
+	
+    ExprBoolean.FLIPCOIN	= < flipCoin() > //Flip a coin to make a random choice. flipCoin() will either be true or false with a chance of 50%-50%. 
+	
+    ExprBoolean.LEFISOBS	= < leftIsObstacle >
+    ExprBoolean.LEFISCLR	= < leftIsClear >
+    ExprBoolean.LEFISBEA	= < leftIsBeacon >
+    ExprBoolean.LEFISWTE	= < leftIsWhite >
+    ExprBoolean.LEFISBLK	= < leftIsBlack >
+    	
+    ExprBoolean.FROISOBS	= < frontIsObstacle >
+    ExprBoolean.FROISCLR	= < frontIsClear >
+    ExprBoolean.FROISBEA	= < frontIsBeacon >
+    ExprBoolean.FROISWTE	= < frontIsWhite >
+    ExprBoolean.FROISBLK	= < frontIsBlack >
+    	
+    ExprBoolean.RIGISOBS	= < rightIsObstacle >
+    ExprBoolean.RIGISCLR	= < rightIsClear >
+    ExprBoolean.RIGISBEA	= < rightIsBeacon >
+    ExprBoolean.RIGISWTE	= < rightIsWhite >
+    ExprBoolean.RIGISBLK	= < rightIsBlack >
+    
+    ExprBoolean.LEFISOBSP	= < leftIsObstacle() >
+    ExprBoolean.LEFISCLRP	= < leftIsClear() >
+    ExprBoolean.LEFISBEAP	= < leftIsBeacon() >
+    ExprBoolean.LEFISWTEP	= < leftIsWhite() >
+    ExprBoolean.LEFISBLKP	= < leftIsBlack() >
+    	
+    ExprBoolean.FROISOBSP	= < frontIsObstacle() >
+    ExprBoolean.FROISCLRP	= < frontIsClear() >
+    ExprBoolean.FROISBEAP	= < frontIsBeacon() >
+    ExprBoolean.FROISWTEP	= < frontIsWhite() >
+    ExprBoolean.FROISBLKP	= < frontIsBlack() >
+    	
+    ExprBoolean.RIGISOBSP	= < rightIsObstacle() >
+    ExprBoolean.RIGISCLRP	= < rightIsClear() >
+    ExprBoolean.RIGISBEAP	= < rightIsBeacon() >
+    ExprBoolean.RIGISWTEP	= < rightIsWhite() >
+    ExprBoolean.RIGISBLKP	= < rightIsBlack() >
+
+context-free priorities
+ 
+    {left: ExprBoolean.EqMath 
+    ExprBoolean.NeqMath
+    ExprBoolean.EqBoolean
+    ExprBoolean.NeqBoolean
+    ExprBoolean.LessT		
+    ExprBoolean.LessTorE
+    ExprBoolean.GreaterT
+    ExprBoolean.GreaterTorE}
+    >{left: ExprBoolean.Not ExprBoolean.NotSimb}
+    >{left: ExprBoolean.And ExprBoolean.AndSimb}
+    >{left: ExprBoolean.Or ExprBoolean.OrSimb}
+
+lexical syntax // reserved words
+    Keyword = "true"
+    Keyword = "false"

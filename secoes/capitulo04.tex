@@ -1,24 +1,26 @@
 \chapter{Implementação} %não sei como chamar este capitulo
-
-Este capítulo tem por objetivo mostrar, em um exemplo prático, resultados de uso do compilador desenvolvido nesta pesquisa em conjunto as demais ferramentas de modo que o processo de verificação ocorra como esperado.
+\label{chap:cap4}
+Este capítulo tem por objetivo mostrar como seria uma protótipo funcional que possibilite a integração do FDR com o compilador desenvolvido nesta pesquisa através dos serviços. Na Seção \ref{sub:exper} é explicado como foi realizado o experimento através de um protótipo que integra o compilador com o verificador de modelos. Na Seção \ref{sub:results} é apresentado os resultados obtidos usando a ferramenta proposta.
 
 \section{Experimento Realizado}
 \label{sub:exper}
 
-No Capítulo \ref{chap:cap3} foi apresentado um exemplo adaptado de \cite{furb} que foi utilizado para mostrar na prática o desenvolvimento do compilador. Para este experimento, vamos utilizar esse mesmo exemplo, no entanto, em sua versão completa que é descrita na subseção \ref{sec:defprob}.
+No Capítulo \ref{chap:cap3} foi apresentado um exemplo (Contando Caixas) adaptado de \cite{furb} que foi utilizado para exemplificar durante o processo de definição sintática e transformação. Para este experimento, vamos utilizar esse mesmo exemplo, no entanto, em sua versão completa.
 
-Um dos objetivos desta pesquisa é o desenvolvimento de um protótipo funcional de uma ferramenta que integre o compilador com o verificador de modelos de modo transparente ao usuário do RoboMind. Posto isso, foi proposto um protótipo desenvolvido em Java de um serviço que provê as principais funcionalidades para a verificação automática dos programas ROBO. Para simular em um ambiente real, foi desenvolvido um método que é responsável por enviar os programas ROBO e seus respectivos mapas ao serviço, e como resultado é obtido o resultado da verificação e um contra-exemplo (\textit{traces}), caso existir.
+%Um dos objetivos desta pesquisa é o desenvolvimento de um protótipo funcional de uma ferramenta que integre o compilador com o verificador de modelos de modo transparente ao usuário do RoboMind.
+Propomos um protótipo desenvolvido em Java que provê as principais funcionalidades para a verificação automática dos programas ROBO. Implementamos uma classe chamada \texttt{RobotChecker} com três métodos. O método \texttt{translateRobo2CSP} é responsável por realizar a tradução do programa ROBO para sua a representação formal em CSP; o método \texttt{translateMap2CSP} realiza a tradução do mapa para a notação CSP; e \texttt{verifyAssertion} que faz a verificação das propriedades por meio dos serviços de FDR.
 
-No protótipo proposto foram implementados os principais métodos para realizar a integração do tradutor com o FDR:
+Listamos as principais funcionalidades do protótipo implementado:
+
 \begin{itemize}
+    \item Tradução de ROBO para CSP: recebe um programa ROBO como entrada e através da API do Spoofax é realizada a tradução usando o compilador desenvolvido por esta pesquisa; e como saída é gerado a especificação do programa em notação CSP.
     \item Tradução de mapa: recebe um mapa do ambiente RoboMind como entrada e realiza a tradução automática; e como saída é gerado a especificação formal em CSP do mapa.
-    \item Tradução de ROBO para CSP: recebe um programa ROBO como entrada e chama a API do Spoofax para realizar a tradução usando o compilador desenvolvido por esta pesquisa e como saída é gerado um CSP equivalente.
-    \item Verificação das propriedades no FDR: recebe como entrada o mapa e o programa escritos em CSP, resultado da tradução automatizada; e como saída gera os resultados das verificações e os \textit{traces} resultantes.
+    \item Verificação das propriedades no FDR: recebe como entrada o mapa e o programa escritos em CSP, resultado da tradução automatizada; e como saída gera os resultados das verificações e os \textit{traces} resultantes, se houver.
 \end{itemize}
 
-\section{Definição do problema}
+%\section{Definição do problema}
 \label{sec:defprob}
-O problema consiste em um mundo de 6 colunas e 3 linhas, onde o robô sempre inicia na primeira coluna da segunda linha e e com caixas distribuídas aleatoriamente na primeira e última linha. O objetivo é fazer o robô andar até a última coluna e dizer a quantidade de ciaxas que existem na prieira e última linha, e dizer quais das duas linhas tem mais caixas: sendo 1 para a primeira linha, 2 para a última e 3 se ambas possuem a mesma quantidade. Outro ponto, é que se a quantidade não for igual, deve-se dizer a diferença de caixas que existem entre as linhas. O robô também deve dizer em qual das linhas apareceu a primeira caixa e em qual das linhas apareceu a última caixa: 1 - para a primeira linha; 2 - para a segunda; e 3 para ambas. Para melhor ilustar o experimento, considere os mapas apresentados na Figura \ref{fig:problem}, para cada um dos três mapas apresentados o robô deve mostrar as respectivas saídas.
+O problema consiste em um mundo de 6 colunas e 3 linhas, onde o robô sempre inicia na primeira coluna da segunda linha e e com caixas distribuídas aleatoriamente na primeira e última linha. O objetivo é fazer o robô andar até a última coluna e mostrar alguns valores inteiros através do comando \texttt{show}. O primeiro e segundo valor representam a quantidade de caixas na primeira e última linha, respectivamente. O terceiro valor mostrado mostra quais das duas linhas possuem mais caixas: sendo o valor 1 para a primeira linha, o valor 2 para a última e valor 3 se ambas possuem a mesma quantidade. O quarto valor exibido é a diferença de caixas entre as duas linhas. O quinto e último valor, respectivamente, representa a linha na qual apareceu a primeira e última caixa: sendo valor 1 para a primeira linha; valor 2 para a segunda; e valor 3 para ambas. Para ilustrar o experimento, considere os mapas apresentados na Figura \ref{fig:problem}, para cada um dos mapas tem-se a saída esperada no término da execução do programa.
 
 \begin{figure}[h]
 \centering
@@ -28,7 +30,7 @@ O problema consiste em um mundo de 6 colunas e 3 linhas, onde o robô sempre ini
 \label{fig:problem}
 \end{figure}
 
-Definido o problema, como próximo passo foi desenvolver uma solução para esse problema. Então desenvolvemos um programa ROBO capaz de apresentar as mesmas saídas para cada um desses mapas. A solução que propusemos contém cinco procedimentos e algumas variáveis que são suficientes para resolver o problema em questão. Na Figura \ref{fig:solution} tem um trecho do código ROBO proposto. Podemos notar que há uma estrutura de repetição (\texttt{repeatWhile}) com uma condição (\texttt{frontIsClear}) que verifica se a célula posterior ao robô está livre. Os cinco procedimentos definidos são: (1) \texttt{countLeft}, conta a quantidade de caixas à esquerda do robô; (2) \texttt{countRight}, conta a quantidade de caixas à direita do robô; (3) \texttt{showsMoreBoxes}, mostra qual linha tem mais caixas e a diferença entre elas; (4) \texttt{getBoxsFirstLine}, mostra a quantidade de caixas na primeira linha; por fim, (5) \texttt{getBoxLastLine}, mostra a quantidade de caixas na última linha.
+Apresentado o problema, o próximo passo foi desenvolver uma solução para esse problema. Então desenvolvemos um programa ROBO capaz de apresentar as mesmas saídas para cada um desses mapas. A solução que propusemos contém cinco procedimentos e algumas variáveis que são suficientes para resolver o problema em questão. A Figura \ref{fig:solution} apresenta um trecho do código ROBO proposto. Podemos notar que há uma estrutura de repetição (\texttt{repeatWhile}) com uma condição (\texttt{frontIsClear}) que verifica se a célula posterior ao robô está livre. Os cinco procedimentos definidos são: (1) \texttt{countLeft}, conta a quantidade de caixas à esquerda do robô; (2) \texttt{countRight}, conta a quantidade de caixas à direita do robô; (3) \texttt{showsMoreBoxes}, mostra qual linha tem mais caixas e a diferença entre elas; (4) \texttt{getBoxsFirstLine}, mostra a quantidade de caixas na primeira linha; por fim, (5) \texttt{getBoxLastLine}, mostra a quantidade de caixas na última linha.
 
 \begin{figure}[h]
 \centering
@@ -38,7 +40,57 @@ Definido o problema, como próximo passo foi desenvolver uma solução para esse
 \label{fig:solution}
 \end{figure}
 
-Para validar a efetividade do compilador integrado ao FDR, foi necessário verificar as saídas geradas pelo protótipo e executar os traces gerados no ambiente RoboMind, além disso o protótipo obtém o resultado de uma das propriedades: \texttt{assert PROGRAM :[deadlock free [F]]}. Na próxima seção estão descritos os resultados gerados pela ferramenta.
+Para validar a efetividade do compilador integrado ao FDR, foi necessário verificar as saídas geradas pelo protótipo e executar os \textit{traces} no ambiente RoboMind, obtidos através do resultado da verificação da propriedade: \texttt{assert PROGRAM :[deadlock free [F]]}. Na próxima seção estão descritos os resultados gerados pela ferramenta.
+
+Definimos três testes, um para cada mapa. Na Tabela \ref{table:map1} estão dispostas as entradas e saídas geradas após a execução de cada método. Para o método \texttt{translateRobo2CSP} o arquivo \texttt{program.robo} (o mesmo da Figura \ref{fig:solution}) e  como saída obtivemos o arquivo \texttt{program.csp} com a especificação formal do programa ROBO.
+
+\begin{table}
+\caption{Entradas e saídas para o mapa 1}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{*{14}{|c}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Map 1}} \\ \hline
+\textbf{method} & \textbf{input} & \textbf{output} \\ \hline
+translateRobo2CSP & program.robo & program.csp \\ \hline
+translateMap2CSP & map1.map & map1.csp \\ \hline
+verifyAssertion & program.csp, map1.csp, test1\_program\_map1.csp & result1, traces1 \\ \hline
+\end{tabular}%
+}
+\label{table:map1}
+\fonte{O autor}
+\end{table}
+
+\begin{table}[]
+\label{tab:map2}
+\caption{Entradas e saídas para o mapa 2}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{*{14}{|c}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Map 2}} \\ \hline
+\textbf{method} & \textbf{input} & \textbf{output} \\ \hline
+translateRobo2CSP & program.robo & program.csp \\ \hline
+translateMap2CSP & map2.map & map2.csp \\ \hline
+verifyAssertion & program.csp, map2.csp, test2\_program\_map2.csp & result2, traces2 \\ \hline
+\end{tabular}%
+}
+\fonte{O autor}
+\end{table}
+
+\begin{table}[]
+\label{tab:map3}
+\caption{Entradas e saídas para o mapa 3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{*{14}{|c}|}
+\hline
+\multicolumn{3}{|c|}{\textbf{Map 3}} \\ \hline
+\textbf{method} & \textbf{input} & \textbf{output} \\ \hline
+translateRobo2CSP & program.robo & program.csp \\ \hline
+translateMap2CSP & map3.map & map3.csp \\ \hline
+verifyAssertion & program.csp, map3.csp, test3\_program\_map3.csp & result3, traces3 \\ \hline
+\end{tabular}%
+}
+\fonte{O autor}
+\end{table}
 
 \section{Resultados}
 \label{sub:results}

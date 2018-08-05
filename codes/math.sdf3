@@ -1,0 +1,26 @@
+module ExpressionsMath
+
+imports 
+
+	Common
+
+sorts ExprMath
+
+context-free syntax 
+
+    //arithmetic
+    ExprMath = <(<ExprMath>)> {bracket}
+    ExprMath.Var    = ID
+    ExprMath.Num 	= INT 
+    ExprMath.Min 	= <-<ExprMath>>
+    ExprMath.Add 	= <<ExprMath> + <ExprMath>> {left}
+    ExprMath.Sub 	= <<ExprMath> - <ExprMath>> {left}
+    ExprMath.Mul 	= <<ExprMath> * <ExprMath>> {left}
+    ExprMath.Div 	= <<ExprMath> / <ExprMath>> {left}
+
+  	
+context-free priorities
+ 
+     ExprMath.Min
+     > {left: ExprMath.Mul ExprMath.Div}
+     > {left: ExprMath.Add ExprMath.Sub}

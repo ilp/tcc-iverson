@@ -9,7 +9,6 @@ COMMANDS =
            get.ORIENTATION?o -> 
            get.BX?bx -> 
            get.BY?by -> 
-           coin?c ->
            if (frontIsClear(x,y,o,bx,by)) then (
              get.lookLeft?lookLeftVar ->
              countBoxesProc(lookLeftVar)
