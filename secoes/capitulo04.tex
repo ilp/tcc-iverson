@@ -5,22 +5,11 @@ Este capítulo tem por objetivo mostrar como seria uma protótipo funcional que 
 \section{Experimento Realizado}
 \label{sub:exper}
 
-No Capítulo \ref{chap:cap3} foi apresentado um exemplo (Contando Caixas) adaptado de \cite{furb} que foi utilizado para exemplificar durante o processo de definição sintática e transformação. Para este experimento, vamos utilizar esse mesmo exemplo, no entanto, em sua versão completa.
-
-%Um dos objetivos desta pesquisa é o desenvolvimento de um protótipo funcional de uma ferramenta que integre o compilador com o verificador de modelos de modo transparente ao usuário do RoboMind.
-Propomos um protótipo desenvolvido em Java que provê as principais funcionalidades para a verificação automática dos programas ROBO. Implementamos uma classe chamada \texttt{RobotChecker} com três métodos. O método \texttt{translateRobo2CSP} é responsável por realizar a tradução do programa ROBO para sua a representação formal em CSP; o método \texttt{translateMap2CSP} realiza a tradução do mapa para a notação CSP; e \texttt{verifyAssertion} que faz a verificação das propriedades por meio dos serviços de FDR.
-
-Listamos as principais funcionalidades do protótipo implementado:
-
-\begin{itemize}
-    \item Tradução de ROBO para CSP: recebe um programa ROBO como entrada e através da API do Spoofax é realizada a tradução usando o compilador desenvolvido por esta pesquisa; e como saída é gerado a especificação do programa em notação CSP.
-    \item Tradução de mapa: recebe um mapa do ambiente RoboMind como entrada e realiza a tradução automática; e como saída é gerado a especificação formal em CSP do mapa.
-    \item Verificação das propriedades no FDR: recebe como entrada o mapa e o programa escritos em CSP, resultado da tradução automatizada; e como saída gera os resultados das verificações e os \textit{traces} resultantes, se houver.
-\end{itemize}
+No Capítulo \ref{chap:cap3} foi apresentado um exemplo (Contando Caixas) adaptado de \cite{furb} que foi utilizado para exemplificar o processo de definição sintática e transformação. Para este experimento, vamos utilizar esse mesmo exemplo, no entanto, em sua versão completa.
 
 %\section{Definição do problema}
 \label{sec:defprob}
-O problema consiste em um mundo de 6 colunas e 3 linhas, onde o robô sempre inicia na primeira coluna da segunda linha e e com caixas distribuídas aleatoriamente na primeira e última linha. O objetivo é fazer o robô andar até a última coluna e mostrar alguns valores inteiros através do comando \texttt{show}. O primeiro e segundo valor representam a quantidade de caixas na primeira e última linha, respectivamente. O terceiro valor mostrado mostra quais das duas linhas possuem mais caixas: sendo o valor 1 para a primeira linha, o valor 2 para a última e valor 3 se ambas possuem a mesma quantidade. O quarto valor exibido é a diferença de caixas entre as duas linhas. O quinto e último valor, respectivamente, representa a linha na qual apareceu a primeira e última caixa: sendo valor 1 para a primeira linha; valor 2 para a segunda; e valor 3 para ambas. Para ilustrar o experimento, considere os mapas apresentados na Figura \ref{fig:problem}, para cada um dos mapas tem-se a saída esperada no término da execução do programa.
+O problema consiste em um mundo de 6 colunas e 3 linhas, onde o robô sempre inicia na primeira coluna da segunda linha e e com caixas distribuídas aleatoriamente na primeira e última linha. O objetivo é fazer o robô andar até a última coluna e mostrar alguns valores inteiros através do comando \texttt{show}. O primeiro e segundo valor representam a quantidade de caixas na primeira e última linha, respectivamente. O terceiro valor mostrado mostra quais das duas linhas possuem mais caixas: sendo o valor 1 para a primeira linha, o valor 2 para a última e valor 3 se ambas possuem a mesma quantidade. O quarto valor exibido é a diferença de caixas entre as duas linhas. O quinto e último valor, respectivamente, representa a linha na qual apareceu a primeira e última caixa: sendo valor 1 para a primeira linha; valor 2 para a segunda; e valor 3 para ambas. Para ilustrar o experimento, considere os mapas apresentados na Figura \ref{fig:problem}, para cada um dos mapas no lado direito está apresentado as saídas esperadas no término da execução do programa.
 
 \begin{figure}[h]
 \centering
@@ -30,9 +19,9 @@ O problema consiste em um mundo de 6 colunas e 3 linhas, onde o robô sempre ini
 \label{fig:problem}
 \end{figure}
 
-Apresentado o problema, o próximo passo foi desenvolver uma solução para esse problema. Então desenvolvemos um programa ROBO capaz de apresentar as mesmas saídas para cada um desses mapas. A solução que propusemos contém cinco procedimentos e algumas variáveis que são suficientes para resolver o problema em questão. A Figura \ref{fig:solution} apresenta um trecho do código ROBO proposto. Podemos notar que há uma estrutura de repetição (\texttt{repeatWhile}) com uma condição (\texttt{frontIsClear}) que verifica se a célula posterior ao robô está livre. Os cinco procedimentos definidos são: (1) \texttt{countLeft}, conta a quantidade de caixas à esquerda do robô; (2) \texttt{countRight}, conta a quantidade de caixas à direita do robô; (3) \texttt{showsMoreBoxes}, mostra qual linha tem mais caixas e a diferença entre elas; (4) \texttt{getBoxsFirstLine}, mostra a quantidade de caixas na primeira linha; por fim, (5) \texttt{getBoxLastLine}, mostra a quantidade de caixas na última linha.
+Para esses mapas desenvolvemos um programa ROBO. A solução que propusemos contém cinco procedimentos e algumas variáveis que são suficientes para resolver o problema em questão. A Figura \ref{fig:solution} apresenta um trecho do código ROBO proposto, a versão completa do programa está disposto no Código \ref{cod:solucomp} do Apêndice~\ref{apendice3}. Podemos notar que há uma estrutura de repetição (\texttt{repeatWhile}) com uma condição (\texttt{frontIsClear}) que verifica se a célula posterior ao robô está livre. Os cinco procedimentos definidos são: (1) \texttt{countLeft}, conta a quantidade de caixas à esquerda do robô; (2) \texttt{countRight}, conta a quantidade de caixas à direita do robô; (3) \texttt{showsMoreBoxes}, mostra qual linha tem mais caixas e a diferença entre elas; (4) \texttt{getBoxsFirstLine}, mostra a quantidade de caixas na primeira linha; por fim, (5) \texttt{getBoxLastLine}, mostra a quantidade de caixas na última linha.
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \caption{Solução proposta em ROBO para o problema Contando Caixas}
 \lstinputlisting{codes/solution.rob}
@@ -40,7 +29,28 @@ Apresentado o problema, o próximo passo foi desenvolver uma solução para esse
 \label{fig:solution}
 \end{figure}
 
-Para validar a efetividade do compilador integrado ao FDR, foi necessário verificar as saídas geradas pelo protótipo e executar os \textit{traces} no ambiente RoboMind, obtidos através do resultado da verificação da propriedade: \texttt{assert PROGRAM :[deadlock free [F]]}. Na próxima seção estão descritos os resultados gerados pela ferramenta.
+%Um dos objetivos desta pesquisa é o desenvolvimento de um protótipo funcional de uma ferramenta que integre o compilador com o verificador de modelos de modo transparente ao usuário do RoboMind.
+Propomos um protótipo desenvolvido na linguagem de programação Java\footnote[7]{https://java.com/download}. Este protótipo provê as principais funcionalidades para a verificação automática dos programas ROBO. Implementamos uma classe chamada \texttt{RobotChecker} com três métodos. O método \texttt{translateRobo2CSP} é responsável por realizar a tradução do programa ROBO para sua a representação formal em CSP; o método \texttt{translateMap2CSP} realiza a tradução do mapa para a notação CSP; e \texttt{verifyAssertion} que faz a verificação das propriedades por meio dos serviços de FDR.
+
+Listamos as principais funcionalidades do protótipo implementado:
+
+\begin{itemize}
+    \item Tradução de ROBO para CSP: recebe um programa ROBO como entrada e através da API do Spoofax é realizada a tradução usando o compilador desenvolvido por esta pesquisa; e como saída é gerado a especificação do programa em notação CSP.
+    \item Tradução de mapa: recebe um mapa do ambiente RoboMind como entrada e realiza a tradução automática; e como saída é gerado a especificação formal em CSP do mapa.
+    \item Verificação das propriedades no FDR: recebe como entrada o mapa e o programa escritos em CSP, resultado da tradução automatizada; e como saída gera os resultados das verificações e os \textit{traces} resultantes, se houver.
+\end{itemize}
+
+A Figura \ref{fig:guiprot} mostra uma interface gráfica (GUI) desenvolvida para mostrar ao usuário de forma transparente uma verificação automática. Essa GUI utiliza os métodos descritos anteriormente. A interface conta com três botões: ``Mapa'' onde o usuário escolhe um ou mais mapas do RoboMind; ``Programa'' onde o usuário seleciona o arquivo do programa ROBO; e ``Verificar`` que é responsável por chamar os métodos \texttt{translateRobo2CSP}, \texttt{translateMap2CSP} e \texttt{verifyAssertion}. No lado esquerdo da figura é listado os \textit{traces} gerados pela verificação. Na parte inferior da figura tem um \textit{console}, importante para o usuário acompanhar o resultado da verificação.
+
+\begin{figure}[!h]
+\centering
+\caption{Interface gráfica do protótipo}
+\includegraphics[height=8cm]{figuras/prototipo.png}
+\fonte{O autor}
+\label{fig:guiprot}
+\end{figure}
+
+Para validar a efetividade do compilador integrado ao FDR, foi necessário verificar as saídas geradas pelo protótipo e executar os \textit{traces} no ambiente RoboMind, obtidos através do resultado da verificação da propriedade: \texttt{assert PROGRAM :[deadlock free [F]]}.
 
 Definimos três testes, um para cada mapa. Na Tabela \ref{table:map1} estão dispostas as entradas e saídas geradas após a execução de cada método. Para o método \texttt{translateRobo2CSP} o arquivo \texttt{program.robo} (o mesmo da Figura \ref{fig:solution}) e  como saída obtivemos o arquivo \texttt{program.csp} com a especificação formal do programa ROBO.
 

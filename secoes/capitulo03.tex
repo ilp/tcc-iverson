@@ -49,25 +49,27 @@ Usamos o programa ROBO mostrado na Figura \ref{fig:roboprogram} para ilustrar o 
 Esse programa possui duas variáveis globais: \texttt{counter} que armazena a quantidade de caixas encontradas; e \texttt{lookLeft} que indica qual a linha que o robô deve contar as caixas. O código também possui um procedimento parametrizado chamado \texttt{countBoxes()} com o parâmetro chamado \texttt{side}, cujo valor indica o lado em que o robô vai contar as caixas. Se o valor de \texttt{side} é igual a 1, o robô conta as caixas no seu lado esquerdo (primeira linha do mapa);  quando o parâmetro possui outros valores o robô conta as caixas do lado direito (segunda linha do mapa). O primeiro comando do programa do robô é o comando \texttt{right} (indicado na linha 16), o qual altera sua orientação em 90 graus para a direita. O próximo passo é a execução de um laço pelo comando \texttt{repeatWhile}, o laço ocorre enquanto não houver quaisquer objetos ou paredes na célula à frente do robô. Esse laço é responsável por chamar o procedimento \texttt{countBoxes()} passando o valor da variável \texttt{lookLeft}, que neste exemplo tem valor 1, ou seja, contará as caixas da linha esquerda, seguindo de um \texttt{forward} que move o robô para frente em uma unidade a cada execução do laço. Ao sair dessa estrutura de repetição, o procedimento será executado mais uma vez, com o objetivo de verificar possíveis caixas na última posição do robô e por fim a quantidade de caixas é exibida por meio do comando \texttt{show} exibindo o valor armazenado na variável \texttt{counter} contendo a quantidade de caixas na linha de interesse. 
 A execução deste programa faz o robô percorrer em linha reta contando as caixas à sua esquerda e parar na posição final, quando o programa mostra o resultado 2 (quantidade de caixas encontradas na primeira linha). Caso a variável \texttt{lookLeft} seja inicializada com o valor 0, o programa contaria as caixas encontradas à direita do robô, portanto o valor impresso pelo programa seria 3. 
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \caption{Programa escrito em ROBO}
 \lstinputlisting{codes/program1.rob}
 \fonte{O autor}
 \label{fig:roboprogram}
 \end{figure}
 
-Considerando a gramática apresentada, a Figura \ref{fig:ast1} corresponde a árvore sintática resultante do \textit{parsing} do programa ROBO introduzido na Figura \ref{fig:roboprogram}. A raiz da árvore corresponde ao elemento \texttt{Program} que contém uma lista com todos os comandos (\texttt{Statement}) do programa. No programa, a primeira linha possui a declaração da variável \texttt{counter}. Na AST essa declaração é representado pelo primeiro elemento da lista: \texttt{Declaration(Variable(ID("counter")...}. Isto é, uma declaração de variável com um identificador e uma expressão matemática.
+Considerando a gramática apresentada, a Figura \ref{fig:ast1} corresponde a árvore sintática resultante do \textit{parsing} do programa ROBO introduzido na Figura \ref{fig:roboprogram}. A raiz da árvore corresponde ao elemento \texttt{Program} que contém uma lista com todos os comandos (\texttt{Statement}) do programa. No programa, a primeira linha possui a declaração da variável \texttt{counter}. Na AST essa declaração é representado pelo primeiro elemento da lista: \texttt{Declaration(Variable(ID("counter")...)}. O mesmo vale para a variável \texttt{lookLeft}. Isto é, uma declaração de variável com um identificador e uma expressão matemática. A declaração do procedimento \texttt{countBoxes} é representada por \texttt{Declaration(ID("countBoxes), ...)} (linhas 4 a 8). O comando \texttt{right} na árvore é dado por \texttt{Instr(RIGHT())}. O comando para executar um laço (\texttt{repeatWhile}) é equivalente a \texttt{Instr(RPTWLE(...))} (linhas 11 a 20), onde o primeiro elemento de \texttt{RPTWLE} é \texttt{FROISCLR} para representar o comando \texttt{frontIsClear}, e o segundo é uma representação de \texttt{forward} (\texttt{Instr(FORWARD(...)}). Para uma chamada do procedimento \texttt{countBoxes}, na AST, é denotada por \texttt{Instr(ProcCall(...))} (linhas 21 a 23), ou seja, um identificador, e uma lista de parâmetros no termo \texttt{ExprParams}. Por fim, temos o comando \texttt{show} que é representado por \texttt{Instr(SHOW(...))}.
 
-\begin{figure}[h]
+\begin{figure}[!h]
 \centering
 \caption{AST de um programa ROBO}
-\lstinputlisting[language=Java]{codes/ast2.aterm}
+\lstinputlisting{codes/ast2.aterm}
 \fonte{O autor}
 \label{fig:ast1}
 \end{figure}
 
-As alterações na gramática descritas acima permitem representar sintaticamente programas escritos em ROBO com variáveis e procedimentos e gerar sua árvore sintática. Esta árvore é a entrada para obter a representação formal para o programa em CSP que é apresentada na próxima seção.
+A análise semântica de ROBO até então não realizada pelo compilador. Embora espera-se que o usuário escreva os programas no ambiente RoboMind, o que mostraria erros semânticos, pode haver casos de programas escritos fora desse ambiente. A atual abordagem deixa a cargo do FDR encontrar problemas semânticos da especificação CSP. Portanto, o usuário precisa ter minimamente um conhecimento da notação formal para entender o problema e assim resolver em ROBO. Sendo assim, sendo uma das limitações da nossa abordagem.
 %Mas só com definição da gramática ainda não é possível gerar a especificação formal do programa, neste ponto é preciso realizar transformações na árvore para alcançar tal objetivo. Desse modo, é introduzido na próxima seção a geração de código CSP através da linguagem Stratego.
+
+As alterações na gramática descritas acima permitem representar sintaticamente programas escritos em ROBO com variáveis e procedimentos e gerar sua árvore sintática. Esta árvore é a entrada para obter a representação formal para o programa em CSP que é apresentada na próxima seção.
 
 \section{Transformação com Stratego}
 
