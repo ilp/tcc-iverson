@@ -4,7 +4,7 @@ var-analyze-type: [] -> []
 var-analyze-type: [Declaration(var) | es] -> [ <write-variable-type> var, " | " | <var-analyze-type> es ]
 
 write-variable-type:
-	Variable(ID(name), ExpMath(exp)) -> $[[name].MAXVAR]
+	Variable(ID(name), ExpMath(exp)) -> $[[name].INTVALUES]
 	
 write-variable-type:
 	Variable(ID(name), ExpBool(exp)) -> $[[name].Bool]

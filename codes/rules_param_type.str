@@ -3,5 +3,5 @@ rules
 param-analyze-type: [] -> []
 param-analyze-type: [ID(n) | es] ->  [ <write-param-type> n | <param-analyze-type> es ]
 
-write-param-type: n -> $[[n].MAXVAR | ]
+write-param-type: n -> $[[n].INTVALUES | ]
 

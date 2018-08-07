@@ -76,8 +76,10 @@
   numbers=left, % show line numbers at the left
 }
 
-% ---
+\captionsetup[table]{labelsep=space, 
+         justification=raggedright, singlelinecheck=off}
 
+% ---
 % ---
 % Formatação de código-fonte
 % ---
@@ -87,7 +89,7 @@
 \renewcommand{\lstlistingname}{Código}
 
 % Altera o rótulo a ser usando no elemento pré-textual "Lista de código"
-\renewcommand{\lstlistlistingname}{Lista de Códigos}
+\renewcommand{\lstlistlistingname}{Lista de códigos}
 
 % Configura a ``Lista de Códigos'' conforme as regras da ABNT (para abnTeX2)
 \begingroup\makeatletter

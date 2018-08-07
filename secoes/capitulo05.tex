@@ -4,7 +4,7 @@
 
 \section{Trabalhos Relacionados}
 
-Até o momento nas pesquisas levantadas, trabalhos que realizem verificação de programas de robôs educacionais de forma totalmente automática além da abordagem introduzida em \cite{nogueira} não foram encontrados. Os trabalhos da literatura que usam verificação automática têm o foco na resolução de outros problemas. O trabalho mais relacionado com o este projeto é \cite{SVA}, que propõe SVA (\textit{Shared Variable Programming}), uma ferramenta para o aprendizado de programação concorrente usando uma linguagem educacional; integra um compilador da linguagem educacional para CSP e o verificador de modelos FDR. Esta ferramenta permite analisar propriedades dos programas relacionadas a concorrência como, por exemplo, se dois programas entram ao mesmo tempo em uma região crítica. Além disso, possui uma interface gráfica que apresenta os resultados das verificações retornados por FDR. Esse trabalho mostra que é possível utilizar o FDR e CSP para a criação de ferramentas de verificação automática de linguagens de domínio específico. 
+O único trabalho encontrado na literatura que realiza verificação de programas de robôs educacionais de forma totalmente automática é~\cite{nogueira}. Porém encontramos outro trabalho que usa verificação automática no contexto educacional. O artigo~\cite{SVA} propõe SVA (\textit{Shared Variable Programming}), que é uma ferramenta para o aprendizado de programação concorrente usando uma linguagem educacional; esta ferramenta integra um compilador da linguagem educacional para um modelo CSP com o verificador de modelos FDR. SVA permite analisar propriedades de programas concorrentes como, por exemplo, se os programas entram ao mesmo tempo em uma região crítica. Além disso, a ferramenta possui uma interface gráfica que apresenta os resultados das verificações retornados por FDR de uma forma amigável para o usuário. Esse trabalho mostra que é possível utilizar o FDR e CSP para a criação de ferramentas de verificação automática de linguagens de domínio específico. 
 
 Em \cite{emanuel2017}, é proposto um protótipo de um ambiente para avaliação automática de robôs virtuais. Esse trabalho é uma continuação do trabalho \cite{nogueira} com foco no projeto e prototipação da interface gráfica de um ambiente para avaliação automática de robôs virtuais. O ambiente proposto objetiva a avaliação de forma automática e \textit{feedback} sobre o funcionamento dos programas escritos em ROBO, através de uma interface gráfica que lembra um sistema de julgamento online (\textit{Online Judgment System}) utilizados nas maratonas de programação. A implementação deste ambiente depende diretamente de um dos produtos deste trabalho, que é a extensão do compilador de ROBO para CSP e sua integração com a ferramenta FDR.
 
@@ -19,7 +19,7 @@ Assim sendo, este trabalho de pesquisa é de grande contribuição para o contex
 
 \section{Trabalhos Futuros}
 
-Os trabalhos futuros podem seguir como melhorias 
+Os trabalhos futuros podem seguir como melhorias... 
 
 Uma das melhorias que pode ser realizada está na criação de regras de tradução que na especificação formal seja proposta uma abordagem que simule uma memória local, dessa forma, mantém apenas as variáveis e parâmetros no escopo de um procedimento. Assim, descartando a adição destes à memória global da especificação, como foi proposto neste trabalho.
 

@@ -1,0 +1,5 @@
+include "robomodel.csp"
+include "map1.csp"
+include "program.csp"
+
+assert PROGRAM :[deadlock free [F]]

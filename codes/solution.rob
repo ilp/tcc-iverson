@@ -1,15 +1,89 @@
-...
+countFirstLine = 0
+countLastLine = 0
+
+findFirstBoxLeft = 0
+findFirstBoxRight = 0
+firstBoxLeft = 10
+firstBoxRight = 10
+
+lastBoxLeft = 0
+lastBoxRight = 0
+
+countForward = 0
+
+# conta a quantidade de caixas da linha de baixo ou de baixo, side = 1 para linha de cima, diferente de 1 para última linha
+procedure countBoxes(side){
+    if(side == 1){
+        if(leftIsObstacle){
+            countFirstLine = countFirstLine + 1
+            
+            if(findFirstBoxLeft == 0){
+                firstBoxLeft = countForward
+                findFirstBoxLeft = 1
+            }    
+            
+            lastBoxLeft = countForward              
+        }
+    } else{
+        if(rightIsObstacle){
+            countLastLine = countLastLine + 1
+            
+            if(findFirstBoxRight == 0){
+                firstBoxRight = countForward
+                findFirstBoxRight = 1
+            }
+            
+            lastBoxRight = countForward
+        }
+    }
+}
+# mostra a linha com mais caixas e a diferença entre elas
+procedure showsMoreBoxes(){
+    if(countFirstLine > countLastLine){
+        show(1)
+        show(countFirstLine - countLastLine)
+    } else if(countFirstLine < countLastLine){
+        show(2)
+        show(countLastLine - countFirstLine)
+    } else{
+        show(3)
+        show(countLastLine - countFirstLine)
+    }
+}
+
+# mostra qual das linhas tem a primeira caixa
+procedure getBoxFirstLine(){
+    if(firstBoxLeft < firstBoxRight){
+        show(1)
+    } else if(firstBoxLeft > firstBoxRight){
+        show(2)
+    } else {
+        show(3)
+    }
+}
+
+# mostra qual das linhas tem a última caixa
+procedure getBoxLastLine(){
+    if(lastBoxLeft > lastBoxRight){
+        show(1)
+    } else if(lastBoxLeft < lastBoxRight){
+        show(2)
+    } else {
+        show(3)
+    }
+}
+
 right
-    
+
 repeatWhile(frontIsClear){
-    countLeft()
-    countRight()  
-    forward
+    countBoxes(1)
+    countBoxes(2)  
+    forward(1)
     countForward = countForward + 1
 }
 
-countLeft()
-countRight()  
+countBoxes(1)
+countBoxes(2)  
 show(countFirstLine)
 show(countLastLine)
 showsMoreBoxes()

@@ -1,8 +1,8 @@
 counterConst = 0
 lookLeftConst = 0
 
-nametype MAXVAR = {0..10}
-datatype VarType = side.MAXVAR | counter.MAXVAR | lookLeft.MAXVAR |  X.TX | Y.TY | ORIENTATION.TO | BX.TBX | BY.TBY
+nametype INTVALUES = {0..10}
+datatype VarType = side.INTVALUES | counter.INTVALUES | lookLeft.INTVALUES |  X.TX | Y.TY | ORIENTATION.TO | BX.TBX | BY.TBY
 INIT = { (side,0), (counter,0), (lookLeft,0), (X, startX), (Y, startY), (ORIENTATION, NORTH_), (BX, startBX), (BY, startBY) }
 
 countBoxesProc(sideParam) =

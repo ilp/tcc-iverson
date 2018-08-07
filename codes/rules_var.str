@@ -11,7 +11,7 @@ to-csp:
 	Variable(ID(n),ExpMath(e)) -> 
 	$[get.[n]?[n]Var ->
 	[var']
-	member([e'], MAXVAR) & set.[n]!([e']) -> ]
+	member([e'], INTVALUES) & set.[n]!([e']) -> ]
 	with
 		var' := <put-get-var-exp-analyze> <get-vars-exp> e;
 		e' := <to-csp-e> e
