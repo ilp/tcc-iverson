@@ -9,15 +9,17 @@ countBoxesProc(sideParam) =
     set.side!(sideParam) -> 
     (let
         IFELSE = 
-            get.X?x -> 
-            get.Y?y -> 
-            get.ORIENTATION?o -> 
-            get.BX?bx -> 
-            get.BY?by -> 
-            coin?c ->
+            ...
             get.side?sideVar ->
-            
-            if((sideVar == 1)) then ( ... ) 
+            if((sideVar == 1)) then ( 
+                (let
+                    ...
+                    if(leftIsObstacle(x,y,o)) then (
+        	     	    get.counter?counterVar ->
+    	     	        member((counterVar + 1), MAXVAR) & set.counter!((counterVar + 1)) ->
+    	     	        ...
+                ...
+            ) 
             ...
     within
 	    IFELSE
@@ -29,9 +31,7 @@ COMMANDS =
     (let
         WHILE = 
             ...
-    within
-        WHILE
-    )
+    ...
     ;
     get.lookLeft?lookLeftVar ->
     countBoxesProc(lookLeftVar)

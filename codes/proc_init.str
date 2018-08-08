@@ -1,0 +1,6 @@
+rules
+
+param-analyze-init: [] -> []
+param-analyze-init: [ID(n)| es] ->  [ <write-param-init> n | <param-analyze-init> es ]
+
+write-param-init: n -> $[([n],0), ]

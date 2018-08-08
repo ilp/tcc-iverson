@@ -1,0 +1,16 @@
+rules
+
+var-analyze-init: [] -> []
+var-analyze-init: [Declaration(var) | es] -> [<write-variable-init> var, "," | <var-analyze-init> es ]   
+
+write-variable-init:
+	Variable(ID(name), ExpMath(exp)) ->
+		$[([name],[exp'])]
+		with
+			exp' := <to-csp-e> exp
+
+write-variable-init:
+	Variable(ID(name), ExpBool(exp)) ->
+		$[([name],[exp'])]
+		with
+			exp' := <to-csp-e> exp
