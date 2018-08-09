@@ -46,12 +46,14 @@ Portanto, este trabalho de pesquisa trás várias contribuições para o context
 
 \section{Trabalhos Futuros}
 
+A abordagem proposta precisa ser validada com outros exemplos além do exemplo do estudo de caso. Um trabalho futuro consiste em usar outros exemplos para validar a abordagem, além de realizar estudos de caso com potenciais usuários.
+
 Uma das limitações apresentadas é uso da constante \texttt{INTVALUES} com a definição de um limite inferior e superior para as variáveis da especificação formal. No entanto, esses valores poderiam ser definidos com limites específicos para cada variável. Sendo assim, uma importante frente para trabalhos futuros.
 
 Uma das melhorias que pode ser realizada está na criação de regras de tradução que na especificação formal seja proposta uma abordagem que simule uma memória local, dessa forma, mantém apenas as variáveis e parâmetros no escopo de um procedimento. Assim, descartando a adição destes à memória global da especificação, como foi proposto neste trabalho.
 
-Outra melhoria estaria relacionada com a implementação do compilador para realizar a checagem semântica de ROBO, como por exemplo, checagem de nomes e tipos. Atualmente, a avaliação semântica de ROBO não é realizada pelo compilador, pois espera-se que os programas tenham a semântica validada no ambiente RoboMind antes da tradução para CSP.
+Outra melhoria está relacionada com a implementação do compilador para realizar a checagem semântica de ROBO, como por exemplo, checagem de nomes e tipos. Atualmente, a avaliação semântica de ROBO não é realizada pelo compilador, pois espera-se que os programas tenham a semântica validada no ambiente RoboMind antes da tradução para CSP.
 
-Outro trabalho futuro consiste em encontrar representações formais mais eficientes. A atual representação em CSP emula a memória como um processo que é colocado em paralelo com os comandos do programa. À medida em que o tamanho do mapa aumenta e o domínio das variáveis, esta forma de modelagem cria uma grande explosão no número de estados do programa durante a análise. A investigação de abordagens mais compactas no número de estados precisam ser estudadas.
+Um trabalho futuro consiste em encontrar representações formais mais eficientes. A atual representação em CSP emula a memória como um processo que é colocado em paralelo com os comandos do programa. À medida em que o tamanho do mapa aumenta e o domínio das variáveis, esta forma de modelagem cria uma grande explosão no número de estados do programa durante a análise. A investigação de abordagens mais compactas no número de estados precisam ser estudadas.
 
 Uma limitação da ferramenta desenvolvida é que as propriedades a serem verificadas são escritas como comandos de FDR. Um trabalho futuro é permitir a especificação das propriedades esperadas para o programa através de uma notação amigável que possa ser traduzida automaticamente para CSP; dispensando assim o conhecimento de CSP.

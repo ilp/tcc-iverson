@@ -1,11 +1,15 @@
 \begin{resumo}[Abstract]
  \begin{otherlanguage*}{english}
   
-The interest in robot programming environments for educational purposes has grown in recent years. However, these environments do not have automated mechanisms to verify the programs, which makes it impossible for students and teachers to have fast and automatic feedback on the operation of the programs. Model Verification is a software engineering technique where systems are specified in a formal language for the purpose of verifying the properties, thus, through a model checking, formally proving the absence of problems. In this work, programs written in the programming language for the simulation of robots called ROBO are automatically translated into a formal specification called CSP (Communicating Sequential Processes) through an automated translation approach, where later properties are verified in a model checking called FDR (Failures-Divergences Refinement). The translation was implemented through a platform called Spoofax, where we defined the ROBO language grammar and specified ROBO transformation rules for CSP. In addition, we validate the approach using a tool to verify the behavior of a ROBO program with variables and procedures.
+There is an increasing interest in virtual robot programming environments for educational purposes in recent years. These environments are an alternative to the use of real robots, which have a high acquisition value. Automatic verification of robot programs is a demand of students and teachers that expect to have fast and automatic feedback about the correctness of robot programs. However, no free software provides an automatic verification of virtual robot programs.  This work proposes an approach for the automatic verification of virtual robot programs authored in the educational language called ROBO. We propose a compiler that reads programs written in ROBO and translates its source code into a formal notation called CSP (Communicating Sequential Processes), which is the input to a model checking tool called FDR (Failures-Divergences Refinement). The compiler was implemented using the facilities of the Spoofax framework, which is used to define a parser for the ROBO language and a set of translation rules from ROBO to CSP.
+This work removes a limitation of our previous verification approach that does not perform the verification of ROBO programs containing variables and procedures.
+A significant contribution is the extension of the verification approach to allow the automatic analysis of ROBO programs with variables and procedures.
+The extension consists of the modification of the compiler grammar by the inclusion of variables and procedures and the inclusion of translation rules that define the formal semantics for the elements added into the grammar.
+Moreover, the work proposes a tool that makes transparent the translation process from ROBO to CSP and the automatic verification using FDR. We validate the approach using the proposed tool to verify the behavior of a ROBO program with variables and procedures.
 
    \vspace{\onelineskip}
  
    \noindent 
-   \textbf{Keywords}:  Software Engineer, Software Verification, Formal Methods, Model Checking, CSP, Automatic Translation, Spoofax.
+   \textbf{Keywords}:  Software Engineering, Software Verification, Formal Methods, Model Checking, CSP, Automatic Translation, Spoofax.
  \end{otherlanguage*}
 \end{resumo}
